@@ -8,8 +8,8 @@ Created on Mon Jul 27 22:43:21 2015
 import telnetlib, re
 
 body="499"
-begin="2020-Jul-28 00:00"
-end="2022-Jul-28 00:00"
+begin="2025-Jul-28 00:00"
+end="2030-Jul-28 00:00"
 
 #def ephemeris(body, begin, end):
 t = telnetlib.Telnet()
