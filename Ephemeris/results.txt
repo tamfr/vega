@@ -88,7 +88,7 @@ Horizons> 499
  Accept default output [ cr=(y), n, ?] : y
  Working ...   -  
 [?1h=*******************************************************************************
-Ephemeris / PORT_LOGIN Tue Jul 28 07:23:47 2015 Pasadena, USA    / Horizons    
+Ephemeris / PORT_LOGIN Tue Jul 28 07:47:41 2015 Pasadena, USA    / Horizons    
 *******************************************************************************
 Target body name: Mars (499)                      {source: MAR097}
 Center body name: Solar System Barycenter (0)     {source: DE-0431LE-0431}
@@ -170,19 +170,12 @@ Geometric states/elements have no aberration corrections applied.
                   telnet ssd.jpl.nasa.gov 6775    (via command-line)
      Author     : Jon.Giorgini@jpl.nasa.gov
 *******************************************************************************
-[K[?1l> >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
- >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : 
+[K[?1l> >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : X
+                                                                          
+     ___    _____     ___                                                 
+    /_ /|  /____/ \  /_ /|       Horizons On-line Ephemeris System v3.97e 
+    | | | |  __ \ /| | | |       Solar System Dynamics Group              
+ ___| | | | |__) |/  | | |__     Jet Propulsion Laboratory                
+/___| | | |  ___/    | |/__ /|   Pasadena, CA, USA                        
+|_____|/  |_|/       |_____|/                                             
+ 

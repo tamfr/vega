@@ -19,7 +19,8 @@ def ephemeris(body, begin, end):
                ( r'Starting *CT.* :', begin + '\n' ),
                ( r'Ending *CT.* :', end + '\n' ),
                ( r'Output interval.*:', '1d\n' ),
-               ( r'Accept default output.*:', 'y\n')
+               ( r'Accept default output.*:', 'y\n'),
+               ( r'Select\.\.\. .A.gain.* :', 'X\n' )
     )
      
     with open('results.txt', 'w') as fp:
