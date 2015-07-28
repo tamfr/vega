@@ -30,3 +30,4 @@ class planet(object):
         self.r = planet['r']                                # Mean Radius [km]
         self.mu = planet['mu']                              # Standard Graviational Parameter [km^3/s^2]
         self.g = planet['g']                                # Gravitational Acceleration [km/s^2]
+        self.lonPer = planet['lonPer']                      # Longitude of Perihelion [radians] 
