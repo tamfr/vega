@@ -1,0 +1,188 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ Unable to negotiate connection within 2 seconds. Defaults: 
+                                                            
+ TERM= vt102, ROWS= 9999, COLUMNS= 9999, ECHO on, FULL-DUPLEX
+                                                            
+ Your terminal, command-line, telnet, or connection program 
+ may not be compliant with RFC 854 and RFC 1073 standards:  
+                                                            
+           http://tools.ietf.org/rfc/rfc854.txt             
+           http://tools.ietf.org/rfc/rfc1073.txt            
+                                                            
+ Using a different program to connect may solve the problem.
+                          -OR -                             
+ The network may be slow and need > 2 seconds (try again).  
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+  ======================================================================
+  |                     Jet Propulsion Laboratory                      |
+  |                                                                    |
+  |                  * * *    W A R N I N G   * * *                    |
+  |                                                                    |
+  |                          Property of the                           |
+  |                      UNITED STATES GOVERNMENT                      |
+  |                                                                    |
+  |    This computer is funded by the United States Government and     |
+  | operated by the California Institute of Technology in support of   |
+  | ongoing U.S. Government programs and activities.  If you are not   |
+  | authorized to access this system, disconnect now.  Users of this   |
+  | system have no expectation of privacy. By continuing, you consent  |
+  |     to your keystrokes and data content being monitored.           |
+  ======================================================================
+ 
+[H[J                                                                          
+     ___    _____     ___                                                 
+    /_ /|  /____/ \  /_ /|       Horizons On-line Ephemeris System v3.97e 
+    | | | |  __ \ /| | | |       Solar System Dynamics Group              
+ ___| | | | |__) |/  | | |__     Jet Propulsion Laboratory                
+/___| | | |  ___/    | |/__ /|   Pasadena, CA, USA                        
+|_____|/  |_|/       |_____|/                                             
+ 
+ Establishing connection, stand-by ...  
+[H[J 
+JPL Horizons, version 3.97e 
+Type `?' for brief intro, `?!' for more details 
+System news updated July 24, 2015
+ 
+Horizons> 499
+[?1h=*******************************************************************************
+ Revised: Sep 28, 2012                 Mars                             499 / 4
+ 
+ GEOPHYSICAL DATA (updated 2009-May-26):
+  Mean radius (km)      = 3389.9(2+-4)    Density (g cm^-3)     =  3.933(5+-4)
+  Mass (10^23 kg )      =    6.4185       Flattening, f         =  1/154.409
+  Volume (x10^10 km^3)  =   16.318        Semi-major axis       =  3397+-4
+  Sidereal rot. period  =   24.622962 hr  Rot. Rate (x10^5 s)   =  7.088218
+  Mean solar day        =    1.0274907 d  Polar gravity ms^-2   =  3.758
+  Mom. of Inertia       =    0.366        Equ. gravity  ms^-2   =  3.71
+  Core radius (km)      =  ~1700          Potential Love # k2   =  0.153 +-.017
+ 
+  Grav spectral fact u  =   14 (x10^5)    Topo. spectral fact t = 96 (x10^5)
+  Fig. offset (Rcf-Rcm) = 2.50+-0.07 km   Offset (lat./long.)   = 62d / 88d
+  GM (km^3 s^-2)        = 42828.3         Equatorial Radius, Re = 3394.0 km 
+  GM 1-sigma (km^3 s^-2)= +- 0.1          Mass ratio (Sun/Mars) = 3098708+-9
+  
+  Atmos. pressure (bar) =    0.0056       Max. angular diam.    =  17.9"
+  Mean Temperature (K)  =  210            Visual mag. V(1,0)    =  -1.52
+  Geometric albedo      =    0.150        Obliquity to orbit    =  25.19 deg
+  Mean sidereal orb per =    1.88081578 y Orbit vel.  km/s      =  24.1309
+  Mean sidereal orb per =  686.98 d       Escape vel. km/s      =   5.027
+  Hill's sphere rad. Rp =  319.8          Mag. mom (gauss Rp^3) = < 1x10^-4 
+*******************************************************************************
+[K[?1l> Select ... [E]phemeris, [F]tp, [M]ail, [R]edisplay, ?, <cr>: E
+ 
+ Observe, Elements, Vectors  [o,e,v,?] : e
+ Coordinate system center   [ ###, ? ] : 0
+ Reference plane [eclip, frame, body ] : eclip
+ Starting CT  [>=   1900-Jan-04 00:00] : 2015-Jul-28 00:00
+ Ending   CT  [<=   2500-Jan-04 00:00] : 2015-Jul-30 00:00
+ Output interval [ex: 10m, 1h, 1d, ? ] : 1d
+ 
+ Current output table defaults --
+   Ref. Frame   = ICRF/J2000.0
+   Units        = AU-D
+   CSV format   = NO
+   Element label= YES
+   Periapse time= ABSOLUTE
+ 
+ Accept default output [ cr=(y), n, ?] : y
+ Working ...   -  
+[?1h=*******************************************************************************
+Ephemeris / PORT_LOGIN Tue Jul 28 07:23:47 2015 Pasadena, USA    / Horizons    
+*******************************************************************************
+Target body name: Mars (499)                      {source: MAR097}
+Center body name: Solar System Barycenter (0)     {source: DE-0431LE-0431}
+Center-site name: BODY CENTER
+*******************************************************************************
+Start time      : A.D. 2015-Jul-28 00:00:00.0000 CT 
+Stop  time      : A.D. 2015-Jul-30 00:00:00.0000 CT 
+Step-size       : 1440 minutes
+*******************************************************************************
+Center geodetic : 0.00000000,0.00000000,0.0000000 {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 0.00000000,0.00000000,0.0000000 {E-lon(deg),Dxy(km),Dz(km)}
+Center radii    : (undefined)                                                  
+System GM       : 2.9630898843780145E-04 au^3/d^2
+Output units    : AU-D, deg, Julian day number (Tp)                            
+Output format   : 10
+Reference frame : ICRF/J2000.0                                                 
+Output type     : GEOMETRIC osculating elements
+Coordinate systm: Ecliptic and Mean Equinox of Reference Epoch                 
+*******************************************************************************
+JDCT 
+   EC    QR   IN
+   OM    W    Tp
+   N     MA   TA
+   A     AD   PR
+*******************************************************************************
+$$SOE
+2457231.500000000 = A.D. 2015-Jul-28 00:00:00.0000 (CT)
+ EC= 9.316674635056654E-02 QR= 1.378599801548496E+00 IN= 1.845935393653050E+00
+ OM= 4.955118925797528E+01 W = 2.848604346346501E+02 Tp=  2457001.474267425481
+ N = 5.261733936982628E-01 MA= 1.210334203466350E+02 TA= 1.296301374188280E+02
+ A = 1.520235165616721E+00 AD= 1.661870529684945E+00 PR= 6.841851076309725E+02
+2457232.500000000 = A.D. 2015-Jul-29 00:00:00.0000 (CT)
+ EC= 9.320019347062994E-02 QR= 1.378508113360167E+00 IN= 1.845921110828440E+00
+ OM= 4.955056241313034E+01 W = 2.848511853426037E+02 Tp=  2457001.469666422345
+ N = 5.261967770742376E-01 MA= 1.215674169350537E+02 TA= 1.301113372007298E+02
+ A = 1.520190127340437E+00 AD= 1.661872141320707E+00 PR= 6.841547034964259E+02
+2457233.500000000 = A.D. 2015-Jul-30 00:00:00.0000 (CT)
+ EC= 9.323390357231383E-02 QR= 1.378416176201952E+00 IN= 1.845906975784022E+00
+ OM= 4.954993108167640E+01 W = 2.848422438093909E+02 Tp=  2457001.465701350477
+ N = 5.262200775538025E-01 MA= 1.221011066304866E+02 TA= 1.305916379698754E+02
+ A = 1.520145252047235E+00 AD= 1.661874327892517E+00 PR= 6.841244098353362E+02
+$$EOE
+*******************************************************************************
+Coordinate system description:
+
+  Ecliptic and Mean Equinox of Reference Epoch
+
+    Reference epoch: J2000.0
+    xy-plane: plane of the Earth's orbit at the reference epoch
+    x-axis  : out along ascending node of instantaneous plane of the Earth's
+              orbit and the Earth's mean equator at the reference epoch
+    z-axis  : perpendicular to the xy-plane in the directional (+ or -) sense
+              of Earth's north pole at the reference epoch.
+
+Symbol meaning [1 au=149597870.700 km, 1 day=86400.0 s]:
+
+    JDCT     Epoch Julian Date, Coordinate Time
+      EC     Eccentricity, e                                                   
+      QR     Periapsis distance, q (AU)                                        
+      IN     Inclination w.r.t xy-plane, i (degrees)                           
+      OM     Longitude of Ascending Node, OMEGA, (degrees)                     
+      W      Argument of Perifocus, w (degrees)                                
+      Tp     Time of periapsis (Julian day number)                             
+      N      Mean motion, n (degrees/day)                                      
+      MA     Mean anomaly, M (degrees)                                         
+      TA     True anomaly, nu (degrees)                                        
+      A      Semi-major axis, a (AU)                                           
+      AD     Apoapsis distance (AU)                                            
+      PR     Sidereal orbit period (day)                                       
+
+Geometric states/elements have no aberration corrections applied.
+
+ Computations by ...
+     Solar System Dynamics Group, Horizons On-Line Ephemeris System
+     4800 Oak Grove Drive, Jet Propulsion Laboratory
+     Pasadena, CA  91109   USA
+     Information: http://ssd.jpl.nasa.gov/
+     Connect    : telnet://ssd.jpl.nasa.gov:6775  (via browser)
+                  telnet ssd.jpl.nasa.gov 6775    (via command-line)
+     Author     : Jon.Giorgini@jpl.nasa.gov
+*******************************************************************************
+[K[?1l> >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : y
+ >>> Select... [A]gain, [N]ew-case, [F]tp, [K]ermit, [M]ail, [R]edisplay, ? : 
