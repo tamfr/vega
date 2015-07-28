@@ -21,12 +21,12 @@ class planet(object):
         mu: Standard Graviational Parameter [km^3/s^2].
         g: Gravitational Acceleration [km/s^2].
     """
-    def __init__(self):
-        self.e = 0.093439031                              # Eccentricity
-        self.Ra = 249234450.9                             # Aphelion [km]
-        self.Rp = self.Ra * (1 - self.e) / (1 + self.e)   # Perihelion [km]
-        self.a = self.Ra / (1 + self.e)                   # Semi-Major Axis [km]
-        self.T = 2 * np.pi * (self.a**3 / muSun)**(1 / 2) # Orbital Period [s]
-        self.r = 3389.92                                  # Mean Radius [km]
-        self.mu = 42828.3                                 # Standard Graviational Parameter [km^3/s^2]
-        self.g = 3.71 * 10**(-3)                          # Gravitational Acceleration [km/s^2]
+    def __init__(self, planet):
+        self.e = planet['e']                                # Eccentricity
+        self.Ra = planet['Ra']                              # Aphelion [km]
+        self.Rp = self.Ra * (1 - self.e) / (1 + self.e)     # Perihelion [km]
+        self.a = self.Ra / (1 + self.e)                     # Semi-Major Axis [km]
+        self.T = 2 * np.pi * (self.a**3 / muSun)**(1 / 2)   # Orbital Period [s]
+        self.r = planet['r']                                # Mean Radius [km]
+        self.mu = planet['mu']                              # Standard Graviational Parameter [km^3/s^2]
+        self.g = planet['g']                                # Gravitational Acceleration [km/s^2]

@@ -18,20 +18,22 @@ JDN0 = 2455565.2736; # Julian Day Number of Last Epoch (i.e. CE 2011 January 03 
 # Constant Orbital Elements for Earth
 
 Earth = {
-    'e' : 0.016741967,      # Eccentricity.
-    'Rp': 152105805.7,      # Perihelion [km].
-    'r' : 6378.136,         # Mean Radius [km].
-    'mu': 398600.440,       # Standard Graviational Parameter [km^3/s^2].
-    'g' : 9.81*10**(-3)     # Gravitational Acceleration [km/s^2].
+    'e'     : 0.016741967,          # Eccentricity.
+    'Ra'    : 152105805.7,          # Aphelion [km].
+    'r'     : 6378.136,             # Mean Radius [km].
+    'mu'    : 398600.440,           # Standard Graviational Parameter [km^3/s^2].
+    'g'     : 9.81*10**(-3),        # Gravitational Acceleration [km/s^2].
+    'lonPer': 102.94719*np.pi/180   # Longitude of Perihelion [radians] (http://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html)
 }
 
 ##############################################################################
 # Constant Orbital Elements for Mars
 
 Mars = {
-    'e' : 0.016741967,      # Eccentricity.
-    'Rp': 152105805.7,      # Perihelion [km].
-    'r' : 6378.136,         # Mean Radius [km].
-    'mu': 398600.440,       # Standard Graviational Parameter [km^3/s^2].
-    'g' : 9.81*10**(-3)     # Gravitational Acceleration [km/s^2].
+    'e'     : 0.093439031,          # Eccentricity.
+    'Ra'    : 249234450.9,          # Aphelion [km].
+    'r'     : 3389.92,              # Mean Radius [km].
+    'mu'    : 42828.3,              # Standard Graviational Parameter [km^3/s^2].
+    'g'     : 3.71*10**(-3),        # Gravitational Acceleration [km/s^2].
+    'lonPer': 336.04084*np.pi/180   # Longitude of Perihelion [radians] (http://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html)
 }
