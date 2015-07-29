@@ -24,7 +24,7 @@ def eccentric_anomaly(e,M):
             E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0)) # Newton's Root Finding Method
         
     
-    f = 2*np.arctan(((1 + e) / (1 - e))**(1/2)*np.tan(E1/2)) # Mars True Anomaly for Min Hohmann Transfer
+    f = 2*np.arctan(((1 + e) / (1 - e))**(1/2)*np.tan(E1/2)) # True Anomaly
     
     # Test to Make Sure True Anomaly is Between 0 and 360 Degrees
     
