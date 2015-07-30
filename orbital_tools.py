@@ -4,8 +4,12 @@ Created on Tue Jul 28 22:09:52 2015
 
 @author: Mott
 """
-
+from __future__ import division
 import numpy as np
+
+
+def mean_anomaly(e,M): 
+    return
 
 def eccentric_anomaly(e,M):    
     

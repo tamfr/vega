@@ -4,6 +4,7 @@ Created on Mon Jul 27 21:20:51 2015
 
 @author: Mott
 """
+from __future__ import division
 import numpy as np
 
 muSun = 2.9591230378107664 * 10**(-4) * 149597870**3 / 86400**2 # Sun Standard Gravitational Parameter [km^3/s^2]
