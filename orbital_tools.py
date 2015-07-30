@@ -15,10 +15,10 @@ def eccentric_anomaly(e,M):
     
     # Iteration Loop to Find Eccentric Anomaly
     
-    E0 = np.pi/3 # Initilize Eccentric Anomaly for Loop
+    E0 = M*((M > np.pi) + (M < np.pi)) # Initilize Eccentric Anomaly for Loop
     E1 = -np.pi/2 # Initilize Eccentric Anomaly for Loop
 
-    while abs(E1/E0 - 1) > 0.0005: # Condition On Which to Run Loop
+    while abs(E1-E0) > 0.0005: # Condition On Which to Run Loop
         if E1 > 2*np.pi:
             E1 = E1 - 2*np.pi
         elif E1 < 0:
@@ -27,11 +27,10 @@ def eccentric_anomaly(e,M):
             E0 = E1
             E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0)) # Newton's Root Finding Method
         
-    
-    f = 2*np.arctan(((1 + e) / (1 - e))**(1/2)*np.tan(E1/2)) # True Anomaly
+def true_anomaly(e,E):   
+    f = 2*np.arctan(((1 + e) / (1 - e))**(1/2)*np.tan(E/2)) # True Anomaly
     
     # Test to Make Sure True Anomaly is Between 0 and 360 Degrees
-    
     if f < 0: 
         f = f + 2*np.pi
     elif f > 2*np.pi:
