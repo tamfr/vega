@@ -12,13 +12,14 @@ def mean_anomaly(e,M):
     return
 
 def eccentric_anomaly(e,M):    
-    
+    count = 0
     # Iteration Loop to Find Eccentric Anomaly
     
-    E0 = M*((M > np.pi) + (M < np.pi)) # Initilize Eccentric Anomaly for Loop
-    E1 = -np.pi/2 # Initilize Eccentric Anomaly for Loop
-
+    E0 = -np.pi # Initilize Eccentric Anomaly for Loop
+    E1 = M+(e+np.cos(M))*np.sin(M) # Initilize Eccentric Anomaly for Loop
+    
     while abs(E1-E0) > 0.0005: # Condition On Which to Run Loop
+        count += 1        
         if E1 > 2*np.pi:
             E1 = E1 - 2*np.pi
         elif E1 < 0:
@@ -26,7 +27,26 @@ def eccentric_anomaly(e,M):
         else:
             E0 = E1
             E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0)) # Newton's Root Finding Method
-        
+    return (E1,count)
+
+def eccentric_anomaly_old(e,M):    
+    count = 0
+    # Iteration Loop to Find Eccentric Anomaly
+    
+    E0 = np.pi/3 # Initilize Eccentric Anomaly for Loop
+    E1 = -np.pi/2 # Initilize Eccentric Anomaly for Loop
+    
+    while abs(E1-E0) > 0.0005: # Condition On Which to Run Loop
+        count += 1        
+        if E1 > 2*np.pi:
+            E1 = E1 - 2*np.pi
+        elif E1 < 0:
+            E1 = E1 + np.pi
+        else:
+            E0 = E1
+            E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0)) # Newton's Root Finding Method
+    return (E1,count)
+    
 def true_anomaly(e,E):   
     f = 2*np.arctan(((1 + e) / (1 - e))**(1/2)*np.tan(E/2)) # True Anomaly
     
