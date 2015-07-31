@@ -7,9 +7,9 @@ Created on Mon Jul 27 22:43:21 2015
 
 import telnetlib, re
 
-body="399"
+body="499"
 begin="2026-JAN-03 17:16"
-end="2027-JAN-04 17:16"
+end="2026-JAN-04 17:16"
 
 #def ephemeris(body, begin, end):
 t = telnetlib.Telnet()

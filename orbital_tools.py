@@ -99,4 +99,4 @@ def t_of_M_T(T,M):
     """Mean anomaly as fucntion of eccentric anomaly.
         Requires semi-major axis and standard gravitational parameter of the central body.
     """ 
-    return M*(2*np.pi/T)
+    return M*T/2*np.pi
