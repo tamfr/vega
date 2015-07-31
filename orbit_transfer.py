@@ -19,14 +19,9 @@ Mars = planet(Mars)
 
 Theta = Mars.lonPer-Earth.lonPer
 
-EE0 = 2*np.arctan(np.tan(fE0/2)*((1-Earth.e)/(1+Earth.e))**(1/2))
-
-if EE0 < 0: # Tests to Make Sure Eccentric Anomaly is Positive
-    EE0 = EE0 + 2*np.pi
 
 
-ME0 = EE0-Earth.e*np.sin(EE0) # Earth Mean Anamoly at Epoch
+
+ME0 = OT.M_of_E(Earth.e,OT.E_of_f(Earth.e,fE0))
 TE0 = ME0/(2*np.pi/Earth.T) # Earth Period Advance at Epoch
-
-
 f = OT.f_of_E(Earth.e,OT.E_of_M(Earth.e,OT.M_of_t(Earth.T,TE0 + 365*86400)))

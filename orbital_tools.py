@@ -89,8 +89,14 @@ def M_of_E(e,E):
     """ 
     return E-e*np.sin(E)
     
-def t_of_M(a,mu,M):
+def t_of_M_a(a,mu,M):
     """Mean anomaly as fucntion of eccentric anomaly.
         Requires semi-major axis and standard gravitational parameter of the central body.
     """ 
     return M*(a**3/mu)**(1/2)
+
+def t_of_M_T(T,M):
+    """Mean anomaly as fucntion of eccentric anomaly.
+        Requires semi-major axis and standard gravitational parameter of the central body.
+    """ 
+    return M*(2*np.pi/T)
