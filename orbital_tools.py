@@ -8,10 +8,16 @@ from __future__ import division
 import numpy as np
 
 
-def mean_anomaly(e,M): 
-    return
+def M_of_t(T,t): 
+    """Mean anomaly as fucntion of time.
+        Requires period.
+    """    
+    return (2*np.pi/T)*((t)-int((t)/T)*T)    
 
-def eccentric_anomaly(e,M):    
+def E_of_M(e,M): 
+    """Eccentric anomaly as fucntion of mean anomaly.
+        Requires eccentritcity.
+    """
     count = 0
     # Iteration Loop to Find Eccentric Anomaly
     
@@ -27,9 +33,12 @@ def eccentric_anomaly(e,M):
         else:
             E0 = E1
             E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0)) # Newton's Root Finding Method
-    return (E1,count)
+    return E1
 
-def eccentric_anomaly_old(e,M):    
+def E_of_M_old(e,M):    
+    """Eccentric anomaly as fucntion of mean anomaly.
+        Requires eccentritcity.
+    """
     count = 0
     # Iteration Loop to Find Eccentric Anomaly
     
@@ -47,7 +56,10 @@ def eccentric_anomaly_old(e,M):
             E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0)) # Newton's Root Finding Method
     return (E1,count)
     
-def true_anomaly(e,E):   
+def f_of_E(e,E):
+    """True anomaly as fucntion of eccentric anomaly.
+        Requires eccentritcity.
+    """
     f = 2*np.arctan(((1 + e) / (1 - e))**(1/2)*np.tan(E/2)) # True Anomaly
     
     # Test to Make Sure True Anomaly is Between 0 and 360 Degrees
@@ -57,3 +69,9 @@ def true_anomaly(e,E):
         f = f - 2*np.pi
     
     return f
+    
+def E_of_f(e,f):
+    """Eccentric anomaly as fucntion of true anomaly.
+        Requires eccentritcity.
+    """    
+    return 2*np.arctan(((1-e)/(1+e))**(1/2)*np.tan(f/2)) # Determines Transfer Orbit Eccentric Anomaly

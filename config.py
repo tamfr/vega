@@ -37,10 +37,11 @@ Mars = {
 
 # Theta = LonPerMars-LonPerEarth # Angle Between Earth's Perihelion and Mars's Perihelion [radians]
 
+# Source for perihelion data: http://www.astropixels.com/ephemeris/perap2001.html and NASA Horizons.
 
-# fE0 = (4.54323446*10^(-4))*pi/180; fM0 = 319.4234417*pi/180; JDN0 = 2455565.2736 # Date of Epoch: 03 Jan 2011 18:34:00 UT
-# fE0 = (7.8331757*10^(-1))*pi/180; fM0 = 199.18562*pi/180; JDN0 = 2457391.2736 # Date of Epoch: 03 Jan 2016 18:34:00 UT
-# fE0 = (2.498736*10^(-1))*pi/180; fM0 = 90.5240655*pi/180; JDN0 = 2459217.2736 # Date of Epoch: 02 Jan 2021 18:34:00 UT
-# fE0 = (7.558275*10^(-2))*pi/180; fM0 = 309.35329*pi/180; JDN0 = 2461044.2736 # Date of Epoch: 03 Jan 2026 18:34:00 UT
-fE0 = (3.5988321*10**(2))*np.pi/180; fM0 = 192.14974*np.pi/180; JDN0 = 2462871.2736 # Date of Epoch: 04 Jan 2031 18:34:00 UT
+# fE0 = (4.54323446*10**(-4))*np.pi/180; fM0 = 319.4234417*pi/180; JDN0 = 2455565.2736 # Date of Epoch: 03 Jan 2011 18:34:00 UT
+# fE0 = (7.8331757*10**(-1))*np.pi/180; fM0 = 199.18562*pi/180; JDN0 = 2457391.2736 # Date of Epoch: 03 Jan 2016 18:34:00 UT
+# fE0 = (2.498736*10**(-1))*np.pi/180; fM0 = 90.5240655*pi/180; JDN0 = 2459217.2736 # Date of Epoch: 02 Jan 2021 18:34:00 UT
+fE0 = (3.5999922*10**(-2))*np.pi/180; fM0 = 309.35329*np.pi/180; JDN0 = 2461044.2194 # Date of Epoch: 03 Jan 2026 17:16:00 UT
+# fE0 = (3.5988321*10**(2))*np.pi/180; fM0 = 192.14974*np.pi/180; JDN0 = 2462871.2736 # Date of Epoch: 04 Jan 2031 18:34:00 UT
  

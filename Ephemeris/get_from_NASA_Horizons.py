@@ -7,9 +7,9 @@ Created on Mon Jul 27 22:43:21 2015
 
 import telnetlib, re
 
-body="499"
-begin="2025-Jul-28 00:00"
-end="2030-Jul-28 00:00"
+body="399"
+begin="2026-JAN-03 17:16"
+end="2027-JAN-04 17:16"
 
 #def ephemeris(body, begin, end):
 t = telnetlib.Telnet()
@@ -18,7 +18,7 @@ t.open('horizons.jpl.nasa.gov', 6775)
 expect = ( ( r'Horizons>', body + '\n' ),
            ( r'Select.*E.phemeris.*:', 'E\n'),
            ( r'Observe.*:', 'e\n' ),
-           ( r'Coordinate system center.*:', '0\n' ),
+           ( r'Coordinate system center.*:', '10\n' ),
            ( r'Reference plane.*:', 'eclip\n'),
            ( r'Starting *CT.* :', begin + '\n' ),
            ( r'Ending *CT.* :', end + '\n' ),
