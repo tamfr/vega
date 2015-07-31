@@ -70,8 +70,27 @@ def f_of_E(e,E):
     
     return f
     
+#######################
+
 def E_of_f(e,f):
     """Eccentric anomaly as fucntion of true anomaly.
         Requires eccentritcity.
     """    
-    return 2*np.arctan(((1-e)/(1+e))**(1/2)*np.tan(f/2)) # Determines Transfer Orbit Eccentric Anomaly
+    E = 2*np.arctan(((1-e)/(1+e))**(1/2)*np.tan(f/2)) # Determines Transfer Orbit Eccentric Anomaly    
+    # Test to Make Sure Eccentric Anomaly is Greater than 0.
+    if E < 0:
+        E = E + 2*np.pi
+        
+    return E
+
+def M_of_E(e,E):
+    """Mean anomaly as fucntion of eccentric anomaly.
+        Requires eccentritcity.
+    """ 
+    return E-e*np.sin(E)
+    
+def t_of_M(a,mu,M):
+    """Mean anomaly as fucntion of eccentric anomaly.
+        Requires semi-major axis and standard gravitational parameter of the central body.
+    """ 
+    return M*(a**3/mu)**(1/2)

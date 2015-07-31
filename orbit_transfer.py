@@ -9,7 +9,7 @@ Created on Tue Jul 28 17:46:15 2015
 # 2. For Analysis, Earth's Perihelion is the Epoch (JDN 2455565.547 [i.e. CE 2011 January 04 01:07:40.8 UT  Tuesday])
 # 3. Inclination and Orbital Precession are Neglected
 
-from config import Earth, Mars, fE0
+from config import Earth, Mars, fE0, muSun
 from planets import planet
 import orbital_tools as OT
 import numpy as np
@@ -28,6 +28,5 @@ if EE0 < 0: # Tests to Make Sure Eccentric Anomaly is Positive
 ME0 = EE0-Earth.e*np.sin(EE0) # Earth Mean Anamoly at Epoch
 TE0 = ME0/(2*np.pi/Earth.T) # Earth Period Advance at Epoch
 
-M=OT.mean_anomaly(Earth.T,TE0 + 365*86400)
 
-f=OT.f_of_E(Earth.e,OT.E_of_M(Earth.e,OT.M_of_t(Earth.T,TE0 + 365*86400)))
+f = OT.f_of_E(Earth.e,OT.E_of_M(Earth.e,OT.M_of_t(Earth.T,TE0 + 365*86400)))
