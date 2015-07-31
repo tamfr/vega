@@ -40,7 +40,7 @@ with open('results.txt', 'w') as fp:
         fp.flush()
         t.write(expect[answer[0]][1])
 
-# Loop finds all instances of 'EC=' as a generator and sums the values that follow 'EC='.
+# Loop finds all instances of 'EC=' as a generator and averages the values that follow 'EC='.
 tot = 0
 i = 0
 for m in re.finditer('EC=', ephemeri[2]): 

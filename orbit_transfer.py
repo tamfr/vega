@@ -14,3 +14,5 @@ from planets import planet
 
 Earth = planet(Earth)
 Mars = planet(Mars)
+
+Theta = Mars.lonPer-Earth.lonPer
