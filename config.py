@@ -45,3 +45,4 @@ Mars = {
 fE0 = (3.5999922*10**(-2))*np.pi/180; fM0 = 309.35329*np.pi/180; JDN0 = 2461044.2194 # Date of Epoch: 03 Jan 2026 17:16:00 UT
 # fE0 = (3.5988321*10**(2))*np.pi/180; fM0 = 192.14974*np.pi/180; JDN0 = 2462871.2736 # Date of Epoch: 04 Jan 2031 18:34:00 UT
  
+t_max = 5*365*86400 # Length of search window [s]

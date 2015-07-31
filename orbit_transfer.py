@@ -9,7 +9,7 @@ Created on Tue Jul 28 17:46:15 2015
 # 2. For Analysis, Earth's Perihelion is the Epoch (JDN 2455565.547 [i.e. CE 2011 January 04 01:07:40.8 UT  Tuesday])
 # 3. Inclination and Orbital Precession are Neglected
 
-from config import Earth, Mars, fE0, muSun
+from config import Earth, Mars, fE0, t_max, muSun
 from planets import planet
 import orbital_tools as OT
 import numpy as np
@@ -19,9 +19,12 @@ Mars = planet(Mars)
 
 Theta = Mars.lonPer-Earth.lonPer
 
+TE0 = OT.t_of_M_T(Earth.T,OT.M_of_E(Earth.e,OT.E_of_f(Earth.e,fE0))) # Earth Period Advance at Epoch
 
+t = 0
 
-
-ME0 = OT.M_of_E(Earth.e,OT.E_of_f(Earth.e,fE0))
-TE0 = ME0/(2*np.pi/Earth.T) # Earth Period Advance at Epoch
-f = OT.f_of_E(Earth.e,OT.E_of_M(Earth.e,OT.M_of_t(Earth.T,TE0 + 365*86400)))
+while t < t_max:
+    t = t + 84600
+    
+    f = OT.f_of_E(Earth.e,OT.E_of_M(Earth.e,OT.M_of_t(Earth.T,TE0 + t)))
+    print(f)
