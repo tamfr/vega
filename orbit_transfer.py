@@ -19,8 +19,8 @@ Mars = planet(Mars)
 
 Theta = Mars.lonPer-Earth.lonPer
 
-TE0 = OT.t_of_M_T(Earth.T,OT.M_of_E(Earth.e,OT.E_of_f(Earth.e,fE0))) # Earth Period Advance at Epoch
-TM0 = OT.t_of_M_T(Mars.T,OT.M_of_E(Mars.e,OT.E_of_f(Mars.e,fM0))) # Mars Period Advance at Epoch
+TE0 = OT.t_of_M_T( Earth.T, OT.M_of_E( Earth.e, OT.E_of_f( Earth.e, fE0 ) ) ) # Earth Period Advance at Epoch
+TM0 = OT.t_of_M_T( Mars.T,  OT.M_of_E( Mars.e,  OT.E_of_f( Mars.e,  fM0 ) ) ) # Mars Period Advance at Epoch
 
 t = 0
 
