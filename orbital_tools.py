@@ -109,7 +109,7 @@ def t_of_M_T(T,M):
 
 ####################### Non-Hohmann Elliptical Transfers #######################
 
-def fast_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
+def f_fast_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
     """Elliptical fast transfer.
         Requires: 
             f: True anomaly of planet of departure at time of transfer;
@@ -117,7 +117,8 @@ def fast_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
             e_trans: transfer orbit eccentricity;
             a_trans: transfer orbit semi-major axis;
             e_target: target orbit eccentricity;
-            a_target: target orbit semi-major axis.
+            a_target: target orbit semi-major axis;
+            mu: standard gravitational parameter of the central body.
     """       
     Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
     f_T0 = np.pi/3  # Initilize True Anomaly for Loop
@@ -134,9 +135,9 @@ def fast_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
             f_MOA = f_T0+f-Theta
             f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
         
-        return f_T1
-
-def slow_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
+    return f_T1
+    
+def f_slow_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
     """Elliptical fast transfer.
         Requires: 
             f: True anomaly of planet of departure at time of transfer;
@@ -161,7 +162,7 @@ def slow_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
             f_MOA = f_T0+f-Theta
             f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
         
-        return f_T1
+    return f_T1
 
 ####################### Delta V calculations ####################### 
    

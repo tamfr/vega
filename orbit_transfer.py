@@ -15,6 +15,19 @@ from planets import planet
 import orbital_tools as OT
 import numpy as np
 
+def rising_transfer(f_POD, f_target, Theta, e_trans, a_trans, e_target, a_target, T_target, T_target0, e_POD, a_POD, T_POD, T_POD0, mu):
+    f_TOA = OT.f_fast_transfer(f_POD, Theta, e_trans, a_trans, e_target, a_target) # True anomaly of transfer on arrival.
+        
+    T_trans = OT.t_of_M_a(a_trans, mu, OT.M_of_E(e_trans, OT.E_of_f(e_trans, f_TOA))) # Transfer time. 
+        
+    f_PTOA = OT.f_of_E( e_target,  OT.E_of_M( e_target,  OT.M_of_t( T_target,  T_target0 + t + T_trans) ) ) # Target planet true anomaly on arrival.
+        
+    if abs(f_PTOA-(f_TOA+f_POD-Theta)) < 0.5*np.pi/180:
+        print 'Date of Fast Transfer [Julian Day Number]: \n' + str(JDN)  
+                    
+        f_PODOA = OT.f_of_E( e_POD,  OT.E_of_M( e_POD,  OT.M_of_t( T_POD,  T_POD0 + t + T_trans) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
+        
+        print 'OT.transfer_plot('+str(f_POD) +', ' + str(f_PODOA) +', '+str(f_target)+', '+str(f_TOA+f_POD-Theta)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(a_POD)+','+ str(e_POD)+', '+str(a_target)+', '+str(e_target)+', '+str(JDN)+')'
 
 Earth = planet(Earth)
 Mars = planet(Mars)
@@ -27,6 +40,7 @@ T_M0 = OT.t_of_M_T( Mars.T,  OT.M_of_E( Mars.e,  OT.E_of_f( Mars.e,  fM0 ) ) ) #
 # Loop to solve for trajectories.
 
 for t in xrange(0, t_max + step, step):
+    JDN = (JDN0*86400+t)/86400 # Julian Day Number 
     
     # Planet positions over time.
     f_E = OT.f_of_E( Earth.e, OT.E_of_M( Earth.e, OT.M_of_t( Earth.T, T_E0 + t ) ) ) # Earth True anomaly given period advance from epoch
@@ -49,12 +63,10 @@ for t in xrange(0, t_max + step, step):
         
         f_EOMA = OT.f_of_E( Earth.e,  OT.E_of_M( Earth.e,  OT.M_of_t( Earth.T,  T_E0 + t + T_H) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
         
-        JDN = (JDN0*86400+t)/86400 # Julian Day Number
+        OT.transfer_plot(f_E, f_EOMA, f_M, f_MHA, Theta, a_H, e_H, Earth.a, Earth.e, Mars.a, Mars.e, JDN)
         
         print 'Date of Hohmann Departure [Julian Day Number]: \n' + str(JDN)        
         print 'Transfer Time [Days]:' + str(T_H/86400) + '\n'
-        
-        OT.transfer_plot(f_E, f_EOMA, f_M, f_MHA, Theta, a_H, e_H, Earth.a, Earth.e, Mars.a, Mars.e, JDN)
 
     ############################################################   
     ######## All Outbound Trajectories to Target Planet ########
@@ -65,9 +77,28 @@ for t in xrange(0, t_max + step, step):
     
     while e_trans >= e_H:
         
-        aT = R_EH/(1-e_trans)
-        Y = aT*(1-e_trans**2)/(Mars.a*(1-Mars.e**2))
+        a_trans = R_EH/(1-e_trans)
         
         
+#        f_TOA = OT.f_fast_transfer(f_E, Theta, e_trans, a_trans, Mars.e, Mars.a) # True anomaly of transfer on arrival.
+#        
+#        T_trans = OT.t_of_M_a(a_trans, muSun, OT.M_of_E(e_trans, OT.E_of_f(e_trans, f_TOA)))        
+#        
+#        f_MTOA = OT.f_of_E( Mars.e,  OT.E_of_M( Mars.e,  OT.M_of_t( Mars.T,  T_M0 + t + T_trans) ) )
+#        
+#        if abs(f_MTOA-(f_TOA+f_E-Theta)) < 0.5*np.pi/180:
+#            print 'Date of Fast Transfer [Julian Day Number]: \n' + str(JDN)  
+#                        
+#            f_EOMA = OT.f_of_E( Earth.e,  OT.E_of_M( Earth.e,  OT.M_of_t( Earth.T,  T_E0 + t + T_trans) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
+#            
+#            print 'OT.transfer_plot('+str(f_E) +', ' + str(f_EOMA) +', '+str(f_M)+', '+str(f_TOA+f_E-Theta)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(Earth.a)+','+ str(Earth.e)+', '+str(Mars.a)+', '+str(Mars.e)+', '+str(JDN)+')'
         
+        rising_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun)
+        # Return Path options
+#        f_TOA = OT.f_slow_transfer(f_E, Theta, e_trans, a_trans, Mars.e, Mars.a) # True anomaly of transfer on arrival      
+#        T_trans = OT.t_of_M_a(a_trans, muSun, OT.M_of_E(e_trans, OT.E_of_f(e_trans, f_TOA)))        
+#        
+#        f_MTOA = OT.f_of_E( Mars.e,  OT.E_of_M( Mars.e,  OT.M_of_t( Mars.T,  T_M0 + t + T_trans) ) )
+#        
+        e_trans = e_trans - e_step
         
