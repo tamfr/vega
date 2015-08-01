@@ -109,7 +109,7 @@ def t_of_M_T(T,M):
 
 ####################### Non-Hohmann Elliptical Transfers #######################
 
-def f_fast_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
+def f_elliptic_transfer(f, Theta, e_trans, a_trans, e_target, a_target, return_path_option, kind):
     """Elliptical fast transfer.
         Requires: 
             f: True anomaly of planet of departure at time of transfer;
@@ -121,18 +121,18 @@ def f_fast_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
             mu: standard gravitational parameter of the central body.
     """       
     Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
-    f_T0 = np.pi/3  # Initilize True Anomaly for Loop
-    f_T1 = -np.pi/2 # Initilize True Anomaly for Loop
+    f_T0 = np.pi/3*(not return_path_option) + 3*np.pi/2*(return_path_option)  # Initilize True Anomaly for Loop
+    f_T1 = -np.pi/2*(not return_path_option)  + 2*np.pi/3*(return_path_option) # Initilize True Anomaly for Loop
     
     while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
      
-        if f_T1 > np.pi:
+        if f_T1 > np.pi*((not return_path_option) + 2*( return_path_option)):
             f_T1 = f_T1-np.pi
-        elif f_T1 < 0:
+        elif f_T1 < np.pi*(return_path_option):
             f_T1 = f_T1+np.pi
         else:
             f_T0 = f_T1
-            f_MOA = f_T0+f-Theta
+            f_MOA = f_T0+f+np.cos(kind*np.pi)*Theta # np.cos(kind*np.pi) serves as an on/off switch to make Theta negative
             f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
         
     return f_T1

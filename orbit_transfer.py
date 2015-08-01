@@ -15,8 +15,10 @@ from planets import planet
 import orbital_tools as OT
 import numpy as np
 
-def rising_transfer(f_POD, f_target, Theta, e_trans, a_trans, e_target, a_target, T_target, T_target0, e_POD, a_POD, T_POD, T_POD0, mu):
-    f_TOA = OT.f_fast_transfer(f_POD, Theta, e_trans, a_trans, e_target, a_target) # True anomaly of transfer on arrival.
+def rising_transfer(f_POD, f_target, Theta, e_trans, a_trans, e_target, a_target, T_target, T_target0, e_POD, a_POD, T_POD, T_POD0, mu, return_path_option):
+    kind = (a_target > a_POD) # Kind is either 1 for raising orbit and 0 for lowering orbit.
+    
+    f_TOA = OT.f_elliptic_transfer(f_POD, Theta, e_trans, a_trans, e_target, a_target, return_path_option, kind) # True anomaly of transfer on arrival.
         
     T_trans = OT.t_of_M_a(a_trans, mu, OT.M_of_E(e_trans, OT.E_of_f(e_trans, f_TOA))) # Transfer time. 
         
@@ -79,26 +81,25 @@ for t in xrange(0, t_max + step, step):
         
         a_trans = R_EH/(1-e_trans)
         
-        
-#        f_TOA = OT.f_fast_transfer(f_E, Theta, e_trans, a_trans, Mars.e, Mars.a) # True anomaly of transfer on arrival.
-#        
-#        T_trans = OT.t_of_M_a(a_trans, muSun, OT.M_of_E(e_trans, OT.E_of_f(e_trans, f_TOA)))        
-#        
-#        f_MTOA = OT.f_of_E( Mars.e,  OT.E_of_M( Mars.e,  OT.M_of_t( Mars.T,  T_M0 + t + T_trans) ) )
-#        
-#        if abs(f_MTOA-(f_TOA+f_E-Theta)) < 0.5*np.pi/180:
-#            print 'Date of Fast Transfer [Julian Day Number]: \n' + str(JDN)  
-#                        
-#            f_EOMA = OT.f_of_E( Earth.e,  OT.E_of_M( Earth.e,  OT.M_of_t( Earth.T,  T_E0 + t + T_trans) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
-#            
-#            print 'OT.transfer_plot('+str(f_E) +', ' + str(f_EOMA) +', '+str(f_M)+', '+str(f_TOA+f_E-Theta)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(Earth.a)+','+ str(Earth.e)+', '+str(Mars.a)+', '+str(Mars.e)+', '+str(JDN)+')'
-        
-        rising_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun)
+        rising_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 0)
         # Return Path options
-#        f_TOA = OT.f_slow_transfer(f_E, Theta, e_trans, a_trans, Mars.e, Mars.a) # True anomaly of transfer on arrival      
-#        T_trans = OT.t_of_M_a(a_trans, muSun, OT.M_of_E(e_trans, OT.E_of_f(e_trans, f_TOA)))        
-#        
-#        f_MTOA = OT.f_of_E( Mars.e,  OT.E_of_M( Mars.e,  OT.M_of_t( Mars.T,  T_M0 + t + T_trans) ) )
-#        
+        
         e_trans = e_trans - e_step
         
+    
+#    f_EH = f_M + Theta - np.pi # Mars true anomaly on arrival for Hohmann transfer.
+#    R_MH = Mars.a*(1 - Mars.e**2)/(1 + Mars.e*np.cos(f_M)) # Radial distance to Mars for Hohmann transfer.
+#    R_EH = Earth.a*(1 - Earth.e**2)/(1 + Earth.e*np.cos(f_EH)) # Radial distance to Earth for Hohmann transfer.
+#    a_H = (R_MH + R_EH) / 2
+#    e_H = (R_MH - R_EH) / (R_MH + R_EH)
+#    T_H = np.pi*(a_H**3/muSun)**(1/2)
+#    
+#    e_trans = 0.5
+#    e_step = (e_trans-e_H)/500 # Step size of Transfer Eccentricity Earth Return
+#    nER = 0 # Initiate Options Per Day Counter
+#    
+#    while e_trans >= e_H:
+#        a_trans = R_MH/(1-e_trans)
+#        
+#        rising_transfer(f_M, f_E, Theta, e_trans, a_trans, Earth.e, Earth.a, Earth.T, T_E0, Mars.e, Mars.a, Mars.T, T_M0, muSun, 1)
+#        e_trans = e_trans - e_step
