@@ -6,6 +6,7 @@ Created on Tue Jul 28 22:09:52 2015
 """
 from __future__ import division
 import numpy as np
+import matplotlib.pyplot as plt
 
 def R(a,e,f):
     return a*(1 - e**2)/(1 + e*np.cos(f))
@@ -127,3 +128,25 @@ def delta_V_actual_TPI(alt_park, mu_POD, r_POD, delta_v_approx_TPI):
     a_h = mu_POD/delta_v_approx_TPI**2 # Determines Hyperbolic Semi-Major Axis [km]
     e_h = PerHyper/a_h + 1 # Determines Hyperbolic Eccentricity
     return ((e_h + 1)/(e_h - 1))^(1/2)*delta_v_approx_TPI-(mu_POD/PerHyper)^(1/2) # Actual Delta V for trans-planet injection [km/s]
+    
+def transfer_plot(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a_POD, e_POD, a_target, e_target, JDN):
+        fig = plt.figure() # initialize figure
+        ax = fig.add_subplot(111) # name of the plot
+        f = np.arange(0,2*np.pi,2*np.pi/999)
+        ax.set_aspect('equal')
+        
+        R_T = a_trans*(1 - e_trans**2)/(1 + e_trans*np.cos(f))
+        R_E = a_POD*(1 - e_POD**2)/(1 + e_POD*np.cos(f))
+        R_M = a_target*(1 - e_target**2)/(1 + e_target*np.cos(f))
+            
+        ax.plot(R_T*np.cos(f+f_POD), R_T*np.sin(f+f_POD), color='g', lw=1)     # Plots the transfer's orbit in green.
+        ax.plot(R_E*np.cos(f), R_E*np.sin(f), color='b', lw=1)             # Plots Earth's orbit in blue.
+        ax.plot(R_M*np.cos(f+Theta), R_M*np.sin(f+Theta), color='r', lw=1) # Plots Mars's orbit in red.
+        ax.plot(R(a_POD, e_POD, f_POD)*np.cos(f_POD), R(a_POD, e_POD, f_POD)*np.sin(f_POD), color='b', marker='o')              # Plots Earth's position upon TMI.
+        ax.plot(R(a_target, e_target, f_target)*np.cos(f_target+Theta), R(a_target, e_target, f_target)*np.sin(f_target+Theta), color='r', marker='o')      # Plots Mars's position upon TMI.       
+        ax.plot(R(a_POD, e_POD, f_PODOA)*np.cos(f_PODOA), R(a_POD, e_POD, f_PODOA)*np.sin(f_PODOA), color='b', marker='o', fillstyle='none')  # Plots Earth's position upon MOI.        
+        ax.plot(R(a_target, e_target, f_targetOA)*np.cos(f_targetOA+Theta), R(a_target, e_target, f_targetOA)*np.sin(f_targetOA+Theta), color='g', marker='o', fillstyle='none')  # Plots Mars's position upon MOI.
+        ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
+
+        plt.savefig("result" + str(JDN) + ".eps", format="eps")        
+        plt.show()
