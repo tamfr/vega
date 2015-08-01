@@ -104,3 +104,26 @@ def t_of_M_T(T,M):
         Requires semi-major axis and standard gravitational parameter of the central body.
     """ 
     return M*T/(2*np.pi)
+    
+def delta_V_approx_TPI(e_trans, a_trans, a_POD, R_POD, mu_central_body):
+    """Approximate Delta V for trans-planet injection.
+        Requires: 
+            e_trans: transfer orbit eccentricity;
+            a_trans: transfer orbit semi-major axis;
+            a_POD: Planet of departure semi-major axis;
+            R_POD: Planet of departure radial distance at time of departure.
+    """
+    return  (((1+e_trans)/(1-e_trans))*mu_central_body/a_trans)**(1/2)-(mu_central_body*(2/R_POD-1/a_POD))**(1/2) # Delta V for trans-planet injection [km/s].
+            
+def delta_V_actual_TPI(alt_park, mu_POD, r_POD, delta_v_approx_TPI):
+    """Actual Delta V for trans-planet injection.
+         Requires: 
+            alt_park: parking orbit altitude of planet of departure;
+            mu_POD: standard gravitational parameter of planet of departure;
+            r_POD: radius of planet of departure;
+            delta_v_approx_TPI: Approximate delta V for trans planet injection.
+    """     
+    PerHyper = alt_park + r_POD # Periapsis Distance From Center of Earth [km]
+    a_h = mu_POD/delta_v_approx_TPI**2 # Determines Hyperbolic Semi-Major Axis [km]
+    e_h = PerHyper/a_h + 1 # Determines Hyperbolic Eccentricity
+    return ((e_h + 1)/(e_h - 1))^(1/2)*delta_v_approx_TPI-(mu_POD/PerHyper)^(1/2) # Actual Delta V for trans-planet injection [km/s]

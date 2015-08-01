@@ -46,3 +46,8 @@ fE0 = 3.5999934*10**2*np.pi/180; fM0 = 9.0419941*10**1*np.pi/180; JDN0 = 2459217
  
 t_max = 86400*365*5 # Length of search window [s]
 step = 86400 # Step size [s] (86400 [s] is one day)
+
+# Mission requirements
+alt_park_Earth = 330 # Parking orbit altitude [km]
+
+alt_park_Mars = 150 # Parking orbit altitude [km]
