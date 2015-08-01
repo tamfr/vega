@@ -7,6 +7,9 @@ Created on Tue Jul 28 22:09:52 2015
 from __future__ import division
 import numpy as np
 
+def R(a,e,f):
+    return a*(1 - e**2)/(1 + e*np.cos(f))
+
 ####################### Orbital elements given time #######################
 
 def M_of_t(T,t): 
