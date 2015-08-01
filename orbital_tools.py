@@ -105,7 +105,66 @@ def t_of_M_T(T,M):
         Requires semi-major axis and standard gravitational parameter of the central body.
     """ 
     return M*T/(2*np.pi)
+
+
+####################### Non-Hohmann Elliptical Transfers #######################
+
+def fast_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
+    """Elliptical fast transfer.
+        Requires: 
+            f: True anomaly of planet of departure at time of transfer;
+            Theta: Difference between target orbit and orbit of departure longitude of perihelion;            
+            e_trans: transfer orbit eccentricity;
+            a_trans: transfer orbit semi-major axis;
+            e_target: target orbit eccentricity;
+            a_target: target orbit semi-major axis.
+    """       
+    Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
+    f_T0 = np.pi/3  # Initilize True Anomaly for Loop
+    f_T1 = -np.pi/2 # Initilize True Anomaly for Loop
     
+    while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
+     
+        if f_T1 > np.pi:
+            f_T1 = f_T1-np.pi
+        elif f_T1 < 0:
+            f_T1 = f_T1+np.pi
+        else:
+            f_T0 = f_T1
+            f_MOA = f_T0+f-Theta
+            f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
+        
+        return f_T1
+
+def slow_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
+    """Elliptical fast transfer.
+        Requires: 
+            f: True anomaly of planet of departure at time of transfer;
+            Theta: Difference between target orbit and orbit of departure longitude of perihelion;            
+            e_trans: transfer orbit eccentricity;
+            a_trans: transfer orbit semi-major axis;
+            e_target: target orbit eccentricity;
+            a_target: target orbit semi-major axis.
+    """       
+    Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
+    f_T0 = 3*np.pi/2  # Initilize True Anomaly for Loop
+    f_T1 = 2*np.pi/3 # Initilize True Anomaly for Loop
+    
+    while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
+     
+        if f_T1 > 2*np.pi:
+            f_T1 = f_T1-np.pi
+        elif f_T1 < np.pi:
+            f_T1 = f_T1+np.pi
+        else:
+            f_T0 = f_T1
+            f_MOA = f_T0+f-Theta
+            f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
+        
+        return f_T1
+
+####################### Delta V calculations ####################### 
+   
 def delta_V_approx_TPI(e_trans, a_trans, a_POD, R_POD, mu_central_body):
     """Approximate Delta V for trans-planet injection.
         Requires: 
@@ -114,8 +173,8 @@ def delta_V_approx_TPI(e_trans, a_trans, a_POD, R_POD, mu_central_body):
             a_POD: Planet of departure semi-major axis;
             R_POD: Planet of departure radial distance at time of departure.
     """
-    return  (((1+e_trans)/(1-e_trans))*mu_central_body/a_trans)**(1/2)-(mu_central_body*(2/R_POD-1/a_POD))**(1/2) # Delta V for trans-planet injection [km/s].
-            
+    return  (((1+e_trans)/(1-e_trans))*mu_central_body/a_trans)**(1/2)-(mu_central_body*(2/R_POD-1/a_POD))**(1/2) # Delta V for trans-planet injection [km/s].  
+          
 def delta_V_actual_TPI(alt_park, mu_POD, r_POD, delta_v_approx_TPI):
     """Actual Delta V for trans-planet injection.
          Requires: 
@@ -128,7 +187,9 @@ def delta_V_actual_TPI(alt_park, mu_POD, r_POD, delta_v_approx_TPI):
     a_h = mu_POD/delta_v_approx_TPI**2 # Determines Hyperbolic Semi-Major Axis [km]
     e_h = PerHyper/a_h + 1 # Determines Hyperbolic Eccentricity
     return ((e_h + 1)/(e_h - 1))^(1/2)*delta_v_approx_TPI-(mu_POD/PerHyper)^(1/2) # Actual Delta V for trans-planet injection [km/s]
-    
+ 
+####################### Plotting orbit transfers #######################
+   
 def transfer_plot(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a_POD, e_POD, a_target, e_target, JDN):
         fig = plt.figure() # initialize figure
         ax = fig.add_subplot(111) # name of the plot

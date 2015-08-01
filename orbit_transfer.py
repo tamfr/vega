@@ -32,7 +32,8 @@ for t in xrange(0, t_max + step, step):
     f_E = OT.f_of_E( Earth.e, OT.E_of_M( Earth.e, OT.M_of_t( Earth.T, T_E0 + t ) ) ) # Earth True anomaly given period advance from epoch
     f_M = OT.f_of_E( Mars.e,  OT.E_of_M( Mars.e,  OT.M_of_t( Mars.T,  T_M0 + t ) ) ) # Mars True anomaly given period advance from epoch
     
-    # Hohmann Transfer Options
+    ##########################################
+    ######## Hohmann Transfer Options ########
     
     f_MH = f_E - Theta + np.pi # Mars true anomaly on arrival for Hohmann transfer.
     R_MH = Mars.a*(1 - Mars.e**2)/(1 + Mars.e*np.cos(f_MH)) # Radial distance to Mars for Hohmann transfer.
@@ -48,10 +49,25 @@ for t in xrange(0, t_max + step, step):
         
         f_EOMA = OT.f_of_E( Earth.e,  OT.E_of_M( Earth.e,  OT.M_of_t( Earth.T,  T_E0 + t + T_H) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
         
+        JDN = (JDN0*86400+t)/86400 # Julian Day Number
         
-        JDN = (JDN0*86400+t)/86400
-        print T_H
+        print 'Date of Hohmann Departure [Julian Day Number]: \n' + str(JDN)        
+        print 'Transfer Time [Days]:' + str(T_H/86400) + '\n'
         
         OT.transfer_plot(f_E, f_EOMA, f_M, f_MHA, Theta, a_H, e_H, Earth.a, Earth.e, Mars.a, Mars.e, JDN)
 
+    ############################################################   
+    ######## All Outbound Trajectories to Target Planet ########
+    
+    e_trans = 0.999 # Highest eccentricity trnasfer to test for.
+    
+    e_step = (e_trans-e_H)/500 # Step size of Transfer Eccentricity
+    
+    while e_trans >= e_H:
+        
+        aT = R_EH/(1-e_trans)
+        Y = aT*(1-e_trans**2)/(Mars.a*(1-Mars.e**2))
+        
+        
+        
         
