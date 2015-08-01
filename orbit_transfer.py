@@ -10,7 +10,7 @@ Created on Tue Jul 28 17:46:15 2015
 # 3. Inclination and Orbital Precession are Neglected
 
 from __future__ import division
-from config import Earth, Mars, fE0, fM0, t_max, muSun, JDN0
+from config import Earth, Mars, fE0, fM0, t_max, muSun, JDN0, step
 from planets import planet
 import orbital_tools as OT
 import numpy as np
@@ -24,10 +24,9 @@ Theta = Mars.lonPer-Earth.lonPer # Angle between Mars perihelion and Earth perih
 T_E0 = OT.t_of_M_T( Earth.T, OT.M_of_E( Earth.e, OT.E_of_f( Earth.e, fE0 ) ) ) # Earth Period Advance at Epoch
 T_M0 = OT.t_of_M_T( Mars.T,  OT.M_of_E( Mars.e,  OT.E_of_f( Mars.e,  fM0 ) ) ) # Mars Period Advance at Epoch
 
-t = 0
+# Loop to solve for trajectories.
 
-while t < t_max:
-    t = t + 86400 # Time increase [s] (86400 [s] is one day)
+for t in xrange(0, t_max + step, step):
     
     # Planet positions over time.
     f_E = OT.f_of_E( Earth.e, OT.E_of_M( Earth.e, OT.M_of_t( Earth.T, T_E0 + t ) ) ) # Earth True anomaly given period advance from epoch
@@ -47,7 +46,7 @@ while t < t_max:
     
     if abs(f_MHA-f_MH) < 0.5*np.pi/180:
         
-        f_EOMA = OT.f_of_E( Earth.e,  OT.E_of_M( Earth.e,  OT.M_of_t( Earth.T,  T_M0 + t + T_H) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
+        f_EOMA = OT.f_of_E( Earth.e,  OT.E_of_M( Earth.e,  OT.M_of_t( Earth.T,  T_E0 + t + T_H) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
         
         
         JDN = (JDN0*86400+t)/86400

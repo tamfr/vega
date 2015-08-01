@@ -45,3 +45,4 @@ fE0 = 3.5999934*10**2*np.pi/180; fM0 = 9.0419941*10**1*np.pi/180; JDN0 = 2459217
 # fE0 = (3.5988321*10**(2))*np.pi/180; fM0 = 192.14974*np.pi/180; JDN0 = 2462871.2736 # Date of Epoch: 04 Jan 2031 18:34:00 UT
  
 t_max = 86400*365*5 # Length of search window [s]
+step = 86400 # Step size [s] (86400 [s] is one day)
