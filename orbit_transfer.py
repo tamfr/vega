@@ -52,5 +52,6 @@ for t in xrange(0, t_max + step, step):
         JDN = (JDN0*86400+t)/86400
         print T_H
         
+        OT.transfer_plot(f_E, f_EOMA, f_M, f_MHA, Theta, a_H, e_H, Earth.a, Earth.e, Mars.a, Mars.e, JDN)
 
         
