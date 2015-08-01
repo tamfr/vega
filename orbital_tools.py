@@ -7,6 +7,7 @@ Created on Tue Jul 28 22:09:52 2015
 from __future__ import division
 import numpy as np
 
+####################### Orbital elements given time #######################
 
 def M_of_t(T,t): 
     """Mean anomaly as fucntion of time.
@@ -70,7 +71,7 @@ def f_of_E(e,E):
     
     return f
     
-#######################
+####################### Orbital elements given true anomaly #######################
 
 def E_of_f(e,f):
     """Eccentric anomaly as fucntion of true anomaly.

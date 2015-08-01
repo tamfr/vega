@@ -9,7 +9,6 @@ import numpy as np
 # Heliocentric Orbital System Constants (Source: NASA JPL Horizons Web Interface JDN: 2455562.5-2455927.5)
 
 muSun = 2.9591230378107664*10**(-4)*149597870**3/86400**2; # Sun Standard Gravitational Parameter [km^3/s^2]
-JDN0 = 2455565.2736; # Julian Day Number of Last Epoch (i.e. CE 2011 January 03 18:34:00 UT  Tuesday) 
 
 ##############################################################################
 # Constant Orbital Elements for Earth
@@ -41,8 +40,8 @@ Mars = {
 
 # fE0 = (4.54323446*10**(-4))*np.pi/180; fM0 = 319.4234417*pi/180; JDN0 = 2455565.2736 # Date of Epoch: 03 Jan 2011 18:34:00 UT
 # fE0 = (7.8331757*10**(-1))*np.pi/180; fM0 = 199.18562*pi/180; JDN0 = 2457391.2736 # Date of Epoch: 03 Jan 2016 18:34:00 UT
-# fE0 = (2.498736*10**(-1))*np.pi/180; fM0 = 90.5240655*pi/180; JDN0 = 2459217.2736 # Date of Epoch: 02 Jan 2021 18:34:00 UT
-fE0 = 3.5999922*10**2*np.pi/180; fM0 = 3.093210195*10**2*np.pi/180; JDN0 = 2461044.2194 # Date of Epoch: 03 Jan 2026 17:16:00 UT
+fE0 = 3.5999934*10**2*np.pi/180; fM0 = 9.0419941*10**1*np.pi/180; JDN0 = 2459217.0770 # Date of Epoch: 02 Jan 2021 13:51:00 UT
+# fE0 = 3.5999922*10**2*np.pi/180; fM0 = 3.093210195*10**2*np.pi/180; JDN0 = 2461044.2194 # Date of Epoch: 03 Jan 2026 17:16:00 UT
 # fE0 = (3.5988321*10**(2))*np.pi/180; fM0 = 192.14974*np.pi/180; JDN0 = 2462871.2736 # Date of Epoch: 04 Jan 2031 18:34:00 UT
  
-t_max = 5*365*86400 # Length of search window [s]
+t_max = 86400*365*5 # Length of search window [s]
