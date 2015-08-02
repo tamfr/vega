@@ -104,55 +104,29 @@ for t in xrange(0, t_max + step, step):
         a_trans = R_EH/(1-e_trans)
         
         elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 0)
-        # Return Path options
+        
+        # Return path options (i.e. The transfer orbit picks up the target planet on second pass of the target's orbit. )
+        elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 1)
         
         e_trans = e_trans - e_step
         
     ############################################################   
     ######## All Inbound Trajectories to Planet of Origin ########
         
-#    f_EH = f_M + Theta - np.pi # Mars true anomaly on arrival for Hohmann transfer.
-#    R_MH = Mars.a*(1 - Mars.e**2)/(1 + Mars.e*np.cos(f_M)) # Radial distance to Mars for Hohmann transfer.
-#    R_EH = Earth.a*(1 - Earth.e**2)/(1 + Earth.e*np.cos(f_EH)) # Radial distance to Earth for Hohmann transfer.
-#    a_H = (R_MH + R_EH) / 2
-#    e_H = (R_MH - R_EH) / (R_MH + R_EH)
-#    T_H = np.pi*(a_H**3/muSun)**(1/2)
-#    
-#    e_trans = 0.48
-#    e_step = (e_trans-e_H)/500 # Step size of Transfer Eccentricity Earth Return
+    f_EH = f_M + Theta - np.pi # Mars true anomaly on arrival for Hohmann transfer.
+    R_MH = Mars.a*(1 - Mars.e**2)/(1 + Mars.e*np.cos(f_M)) # Radial distance to Mars for Hohmann transfer.
+    R_EH = Earth.a*(1 - Earth.e**2)/(1 + Earth.e*np.cos(f_EH)) # Radial distance to Earth for Hohmann transfer.
+    a_H = (R_MH + R_EH) / 2
+    e_H = (R_MH - R_EH) / (R_MH + R_EH)
+    T_H = np.pi*(a_H**3/muSun)**(1/2)
+    
+    e_trans = 0.48
+    e_step = (e_trans-e_H)/500 # Step size of Transfer Eccentricity Earth Return
 #    #nER = 0 # Initiate Options Per Day Counter
-#    
-#    while e_trans >= e_H:
-#        a_trans = R_MH/(1+e_trans)
-#        
-#        #elliptical_transfer(f_M, f_E, Theta, e_trans, a_trans, Earth.e, Earth.a, Earth.T, T_E0, Mars.e, Mars.a, Mars.T, T_M0, muSun, 1)
-#        Y = a_trans*(1-e_trans**2)/(Earth.a*(1-Earth.e**2))
-#        f_T0 = np.pi/3#3*np.pi/2  # Initilize True Anomaly for Loop
-#        f_T1 = -np.pi/2#-np.pi # Initilize True Anomaly for Loop
-#        
-#        while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
-#            if f_T1 > np.pi:#2*np.pi:
-#                f_T1 = f_T1-np.pi
-#            elif f_T1 < 0:#np.pi:
-#                f_T1 = f_T1+np.pi
-#            else:
-#                f_T0 = f_T1
-#                f_MOA = f_T0+f_M+Theta-np.pi # np.cos(kind*np.pi) serves as a switch to make Theta negative and kind serves as an on/off switch for subtracting pi.
-#                f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*Earth.e*np.cos(f_MOA))/(Y*Earth.e*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
-#                
-#        f_TOA = f_T1
-#        
-#        
-#        T_trans = OT.t_of_M_a(a_trans, muSun, OT.M_of_E(e_trans, OT.E_of_f(e_trans, f_TOA))+np.pi) # Transfer time. 
-#        
-#        f_PTOA = OT.f_of_E( Earth.e,  OT.E_of_M( Earth.e,  OT.M_of_t( Earth.T,  T_E0 + t + T_trans) ) ) # Target planet true anomaly on arrival.
-#        
-#        if abs(f_PTOA-(f_TOA+f_M+Theta-np.pi)) < 0.5*np.pi/180:
-#            print 'Date of return Transfer [Julian Day Number]: \n' + str(JDN)  
-#            print 'Transfer time [days]: ' + str(T_trans/86400)        
-#            f_PODOA = OT.f_of_E( Mars.e,  OT.E_of_M( Mars.e,  OT.M_of_t( Mars.T,  T_M0 + t + T_trans) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
-#        
-#            print 'OT.plot_return('+str(f_M) +', ' + str(f_PODOA) +', '+str(f_E)+', '+str(f_TOA+f_M+Theta-np.pi)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(Mars.a)+','+ str(Mars.e)+', '+str(Earth.a)+', '+str(Earth.e)+', '+str(JDN)+')'
-#       
-#       
-#        e_trans = e_trans - e_step
+    
+    while e_trans >= e_H:
+        a_trans = R_MH/(1+e_trans)
+        
+        elliptical_transfer(f_M, f_E, Theta, e_trans, a_trans, Earth.e, Earth.a, Earth.T, T_E0, Mars.e, Mars.a, Mars.T, T_M0, muSun, 1)
+       
+        e_trans = e_trans - e_step
