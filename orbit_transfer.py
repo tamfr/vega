@@ -15,7 +15,26 @@ from planets import planet
 import orbital_tools as OT
 import numpy as np
 
-def rising_transfer(f_POD, f_target, Theta, e_trans, a_trans, e_target, a_target, T_target, T_target0, e_POD, a_POD, T_POD, T_POD0, mu, return_path_option):
+def elliptical_transfer(f_POD, f_target, Theta, e_trans, a_trans, e_target, a_target, T_target, T_target0, e_POD, a_POD, T_POD, T_POD0, mu, return_path_option):
+    """Elliptical transfer.
+        Requires: 
+            f_POD: true anomaly of planet of departure at time of transfer;
+            f_target: true anomaly of target planet at time of transfer;           
+            Theta: difference between target orbit and orbit of departure longitude of perihelion;            
+            e_trans: transfer orbit eccentricity;
+            a_trans: transfer orbit semi-major axis;
+            e_target: target orbit eccentricity;
+            a_target: target orbit semi-major axis;
+            T_target: target orbit period;
+            T_target0: target orbit period advance at epoch;
+            e_POD: planet of departure orbit eccentricity;
+            a_POD: planet of departure orbit seim-major axis;
+            T_POD: planet of departure orbit period;
+            T_POD0: planet of departure period advnace at epoch;
+            mu: standard gravitational parameter of central body;
+            return_path_option: set 1 for yes and 0 for no.
+    """
+    
     lower = (a_target < a_POD) # Kind is either 0 for raising orbit and 1 for lowering orbit.
     
     f_TOA = OT.f_elliptic_transfer(f_POD, Theta, e_trans, a_trans, e_target, a_target, return_path_option, lower) # True anomaly of transfer on arrival.
@@ -81,7 +100,7 @@ for t in xrange(0, t_max + step, step):
         
         a_trans = R_EH/(1-e_trans)
         
-        rising_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 0)
+        elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 0)
         # Return Path options
         
         e_trans = e_trans - e_step
@@ -103,7 +122,7 @@ for t in xrange(0, t_max + step, step):
 #    while e_trans >= e_H:
 #        a_trans = R_MH/(1+e_trans)
 #        
-#        #rising_transfer(f_M, f_E, Theta, e_trans, a_trans, Earth.e, Earth.a, Earth.T, T_E0, Mars.e, Mars.a, Mars.T, T_M0, muSun, 1)
+#        #elliptical_transfer(f_M, f_E, Theta, e_trans, a_trans, Earth.e, Earth.a, Earth.T, T_E0, Mars.e, Mars.a, Mars.T, T_M0, muSun, 1)
 #        Y = a_trans*(1-e_trans**2)/(Earth.a*(1-Earth.e**2))
 #        f_T0 = np.pi/3#3*np.pi/2  # Initilize True Anomaly for Loop
 #        f_T1 = -np.pi/2#-np.pi # Initilize True Anomaly for Loop

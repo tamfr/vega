@@ -110,7 +110,7 @@ def t_of_M_T(T,M):
 ####################### Non-Hohmann Elliptical Transfers #######################
 
 def f_elliptic_transfer(f, Theta, e_trans, a_trans, e_target, a_target, return_path_option, lower):
-    """Elliptical fast transfer.
+    """Elliptical transfer true anomaly.
         Requires: 
             f: True anomaly of planet of departure at time of transfer;
             Theta: Difference between target orbit and orbit of departure longitude of perihelion;            
