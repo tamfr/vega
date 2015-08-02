@@ -109,7 +109,7 @@ def t_of_M_T(T,M):
 
 ####################### Non-Hohmann Elliptical Transfers #######################
 
-def f_elliptic_transfer(f, Theta, e_trans, a_trans, e_target, a_target, return_path_option, kind):
+def f_elliptic_transfer(f, Theta, e_trans, a_trans, e_target, a_target, return_path_option, lower):
     """Elliptical fast transfer.
         Requires: 
             f: True anomaly of planet of departure at time of transfer;
@@ -120,49 +120,56 @@ def f_elliptic_transfer(f, Theta, e_trans, a_trans, e_target, a_target, return_p
             a_target: target orbit semi-major axis;
             mu: standard gravitational parameter of the central body.
     """       
-    Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
-    f_T0 = np.pi/3*(not return_path_option) + 3*np.pi/2*(return_path_option)  # Initilize True Anomaly for Loop
-    f_T1 = -np.pi/2*(not return_path_option)  + 2*np.pi/3*(return_path_option) # Initilize True Anomaly for Loop
+    low = (not return_path_option and lower)
+    high = (return_path_option and not lower)    
     
+    
+    Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
+    if lower == 0:
+        f_T0 = np.pi/3*(not return_path_option) + 3*np.pi/2*(return_path_option)  # Initilize True Anomaly for Loop
+        f_T1 = -np.pi/2*(not return_path_option)  + 2*np.pi/3*(return_path_option) # Initilize True Anomaly for Loop
+    
+    if lower == 1:
+        f_T0 = 3*np.pi/2*(not return_path_option) + np.pi/3*( return_path_option)  # Initilize True Anomaly for Loop
+        f_T1 = -np.pi*(not return_path_option)  + -np.pi/3*(return_path_option)# Initilize True Anomaly for Loop
+
     while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
-     
-        if f_T1 > np.pi*((not return_path_option) + 2*( return_path_option)):
+        if f_T1 > np.pi*(((not return_path_option and not lower) + (return_path_option and lower)) + 2*(high+low)):
             f_T1 = f_T1-np.pi
-        elif f_T1 < np.pi*(return_path_option):
+        elif f_T1 < np.pi*(high + low):
             f_T1 = f_T1+np.pi
         else:
             f_T0 = f_T1
-            f_MOA = f_T0+f+np.cos(kind*np.pi)*Theta # np.cos(kind*np.pi) serves as an on/off switch to make Theta negative
+            f_MOA = f_T0+f-np.cos(lower*np.pi)*Theta-np.pi*lower # np.cos(lower*np.pi) serves as a switch to make Theta negative and kind serves as an on/off switch for subtracting pi.
             f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
-        
     return f_T1
     
-def f_slow_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
-    """Elliptical fast transfer.
-        Requires: 
-            f: True anomaly of planet of departure at time of transfer;
-            Theta: Difference between target orbit and orbit of departure longitude of perihelion;            
-            e_trans: transfer orbit eccentricity;
-            a_trans: transfer orbit semi-major axis;
-            e_target: target orbit eccentricity;
-            a_target: target orbit semi-major axis.
-    """       
-    Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
-    f_T0 = 3*np.pi/2  # Initilize True Anomaly for Loop
-    f_T1 = 2*np.pi/3 # Initilize True Anomaly for Loop
-    
-    while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
-     
-        if f_T1 > 2*np.pi:
-            f_T1 = f_T1-np.pi
-        elif f_T1 < np.pi:
-            f_T1 = f_T1+np.pi
-        else:
-            f_T0 = f_T1
-            f_MOA = f_T0+f-Theta
-            f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
-        
-    return f_T1
+#def f_slow_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
+#    """Elliptical fast transfer.
+#        Requires: 
+#            f: True anomaly of planet of departure at time of transfer;
+#            Theta: Difference between target orbit and orbit of departure longitude of perihelion;            
+#            e_trans: transfer orbit eccentricity;
+#            a_trans: transfer orbit semi-major axis;
+#            e_target: target orbit eccentricity;
+#            a_target: target orbit semi-major axis.
+#    """       
+#    Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
+#    f_T0 = 3*np.pi/2  # Initilize True Anomaly for Loop
+#    f_T1 = 2*np.pi/3 # Initilize True Anomaly for Loop
+#    
+#    while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
+#     
+#        if f_T1 > 2*np.pi:
+#            f_T1 = f_T1-np.pi
+#        elif f_T1 < np.pi:
+#            f_T1 = f_T1+np.pi
+#        else:
+#            f_T0 = f_T1
+#            f_MOA = f_T0+f-Theta
+#            f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
+#        
+#    return f_T1
 
 ####################### Delta V calculations ####################### 
    
@@ -204,10 +211,64 @@ def transfer_plot(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans,
         ax.plot(R_T*np.cos(f+f_POD), R_T*np.sin(f+f_POD), color='g', lw=1)     # Plots the transfer's orbit in green.
         ax.plot(R_E*np.cos(f), R_E*np.sin(f), color='b', lw=1)             # Plots Earth's orbit in blue.
         ax.plot(R_M*np.cos(f+Theta), R_M*np.sin(f+Theta), color='r', lw=1) # Plots Mars's orbit in red.
+        
         ax.plot(R(a_POD, e_POD, f_POD)*np.cos(f_POD), R(a_POD, e_POD, f_POD)*np.sin(f_POD), color='b', marker='o')              # Plots Earth's position upon TMI.
         ax.plot(R(a_target, e_target, f_target)*np.cos(f_target+Theta), R(a_target, e_target, f_target)*np.sin(f_target+Theta), color='r', marker='o')      # Plots Mars's position upon TMI.       
+        
         ax.plot(R(a_POD, e_POD, f_PODOA)*np.cos(f_PODOA), R(a_POD, e_POD, f_PODOA)*np.sin(f_PODOA), color='b', marker='o', fillstyle='none')  # Plots Earth's position upon MOI.        
         ax.plot(R(a_target, e_target, f_targetOA)*np.cos(f_targetOA+Theta), R(a_target, e_target, f_targetOA)*np.sin(f_targetOA+Theta), color='g', marker='o', fillstyle='none')  # Plots Mars's position upon MOI.
+        ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
+
+        plt.savefig("result" + str(JDN) + ".eps", format="eps")        
+        plt.show()
+  
+def plot_return(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a_POD, e_POD, a_target, e_target, JDN):
+        fig = plt.figure() # initialize figure
+        ax = fig.add_subplot(111) # name of the plot
+        f = np.arange(0,2*np.pi,2*np.pi/999)
+        ax.set_aspect('equal')
+        
+        R_T = a_trans*(1 - e_trans**2)/(1 + e_trans*np.cos(f))
+        R_M = a_POD*(1 - e_POD**2)/(1 + e_POD*np.cos(f))
+        R_E = a_target*(1 - e_target**2)/(1 + e_target*np.cos(f))
+            
+        ax.plot(R_T*np.cos(f+f_POD+Theta-np.pi), R_T*np.sin(f+f_POD+Theta-np.pi), color='y', lw=1)     # Plots the transfer's orbit in yellow.
+        ax.plot(R_E*np.cos(f), R_E*np.sin(f), color='b', lw=1)             # Plots Earth's orbit in blue.
+        ax.plot(R_M*np.cos(f+Theta), R_M*np.sin(f+Theta), color='r', lw=1) # Plots Mars's orbit in red.
+        
+        ax.plot(R(a_POD, e_POD, f_POD)*np.cos(f_POD+Theta), R(a_POD, e_POD, f_POD)*np.sin(f_POD+Theta), color='r', marker='o')              # Plots Mars's position upon TEI.
+        ax.plot(R(a_target, e_target, f_target)*np.cos(f_target), R(a_target, e_target, f_target)*np.sin(f_target), color='b', marker='o')      # Plots Earth's position upon TEI.       
+        
+        ax.plot(R(a_POD, e_POD, f_PODOA)*np.cos(f_PODOA+Theta), R(a_POD, e_POD, f_PODOA)*np.sin(f_PODOA+Theta), color='r', marker='o', fillstyle='none')  # Plots Mars's position upon EOI.        
+        ax.plot(R(a_target, e_target, f_targetOA)*np.cos(f_targetOA), R(a_target, e_target, f_targetOA)*np.sin(f_targetOA), color='y', marker='o', fillstyle='none')  # Plots Earth's position upon EOI.
+        ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
+
+        plt.savefig("result" + str(JDN) + ".eps", format="eps")        
+        plt.show()
+      
+def plot_final(f_low, f_low_OA, f_low_return, f_high, f_high_OA, Theta, a_trans, e_trans, a_trans_return, e_trans_return, a_low, e_low, a_high, e_high, JDN):
+        fig = plt.figure() # initialize figure
+        ax = fig.add_subplot(111) # name of the plot
+        f = np.arange(0,2*np.pi,2*np.pi/999)
+        ax.set_aspect('equal')
+        
+        R_T = a_trans*(1 - e_trans**2)/(1 + e_trans*np.cos(f))
+        R_T_return = a_trans_return*(1 - e_trans_return**2)/(1 + e_trans_return*np.cos(f))
+        R_E = a_low*(1 - e_low**2)/(1 + e_low*np.cos(f))
+        R_M = a_high*(1 - e_high**2)/(1 + e_high*np.cos(f))
+            
+        ax.plot(R_T*np.cos(f+f_low), R_T*np.sin(f+f_low), color='g', lw=1)     # Plots the transfer's orbit in green.
+        ax.plot(R_T_return*np.cos(f+f_low), R_T_return*np.sin(f+f_low), color='y', lw=1)     # Plots the transfer's orbit in green.
+        ax.plot(R_E*np.cos(f), R_E*np.sin(f), color='b', lw=1)             # Plots Earth's orbit in blue.
+        ax.plot(R_M*np.cos(f+Theta), R_M*np.sin(f+Theta), color='r', lw=1) # Plots Mars's orbit in red.
+        
+        ax.plot(R(a_low, e_low, f_low)*np.cos(f_low), R(a_low, e_low, f_low)*np.sin(f_low), color='b', marker='o')              # Plots Earth's position upon TMI.
+        #ax.plot(R(a_high, e_high, f_high)*np.cos(f_high+Theta), R(a_high, e_high, f_high)*np.sin(f_high+Theta), color='r', marker='o')      # Plots Mars's position upon TMI.       
+        
+        #ax.plot(R(a_low, e_low, f_low_OA)*np.cos(f_low_OA), R(a_low, e_low, f_low_OA)*np.sin(f_low_OA), color='b', marker='o', fillstyle='none')  # Plots Earth's position upon MOI.        
+        ax.plot(R(a_high, e_high, f_high_OA)*np.cos(f_high_OA+Theta), R(a_high, e_high, f_high_OA)*np.sin(f_high_OA+Theta), color='g', marker='o', fillstyle='none')  # Plots Mars's position upon MOI.
+        ax.plot(R(a_low, e_low, f_low_return)*np.cos(f_low_return), R(a_low, e_low, f_low_OA)*np.sin(f_low_OA), color='b', marker='o', fillstyle='none')  # Plots Earth's position upon MOI. 
+        
         ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
 
         plt.savefig("result" + str(JDN) + ".eps", format="eps")        
