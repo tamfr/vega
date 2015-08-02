@@ -10,7 +10,7 @@ Created on Tue Jul 28 17:46:15 2015
 # 3. Inclination and Orbital Precession are Neglected
 
 from __future__ import division
-from config import Earth, Mars, fE0, fM0, t_max, muSun, JDN0, step
+from config import Earth, Mars, fE0, fM0, t_max, muSun, JDN0, step, round_trip_max_days, min_stay_time
 from planets import planet
 import orbital_tools as OT
 import numpy as np
@@ -46,12 +46,13 @@ def elliptical_transfer(f_POD, f_target, Theta, e_trans, a_trans, e_target, a_ta
     if abs(f_PTOA-(f_TOA+f_POD-np.cos(lower*np.pi)*Theta-np.pi*lower)) < 0.5*np.pi/180:
         f_PODOA = OT.f_of_E( e_POD,  OT.E_of_M( e_POD,  OT.M_of_t( T_POD,  T_POD0 + t + T_trans) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
         if lower == 0: 
-            print 'Date of outbound transfer [Julian Day Number]: \n' + str(JDN)  
-            print 'OT.transfer_plot('+str(f_POD) +', ' + str(f_PODOA) +', '+str(f_target)+', '+str(f_TOA+f_POD-np.cos(lower*np.pi)*Theta-np.pi*lower)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(a_POD)+','+ str(e_POD)+', '+str(a_target)+', '+str(e_target)+', '+str(JDN)+')'
+            #print 'Date of outbound transfer [Julian Day Number]: \n' + str(JDN)  
+            output = 'OT.transfer_plot('+str(f_POD) +', ' + str(f_PODOA) +', '+str(f_target)+', '+str(f_TOA+f_POD-np.cos(lower*np.pi)*Theta-np.pi*lower)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(a_POD)+','+ str(e_POD)+', '+str(a_target)+', '+str(e_target)+', '+str(JDN)+')'
         else:
-            print 'Date of return transfer [Julian Day Number]: \n' + str(JDN)            
-            print 'OT.plot_return('+str(f_M) +', ' + str(f_PODOA) +', '+str(f_E)+', '+str(f_TOA+f_M+Theta-np.pi)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(Mars.a)+','+ str(Mars.e)+', '+str(Earth.a)+', '+str(Earth.e)+', '+str(JDN)+')'
-
+            #print 'Date of return transfer [Julian Day Number]: \n' + str(JDN)            
+            output = 'OT.plot_return('+str(f_M) +', ' + str(f_PODOA) +', '+str(f_E)+', '+str(f_TOA+f_M+Theta-np.pi)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(Mars.a)+','+ str(Mars.e)+', '+str(Earth.a)+', '+str(Earth.e)+', '+str(JDN)+')'
+        
+        return np.array([JDN, JDN+T_trans/86400, T_trans, a_trans, e_trans, a_target, e_target, a_POD, e_POD, f_E, f_M, f_TOA, f_PTOA, f_PODOA, return_path_option, lower])
 
 Earth = planet(Earth)
 Mars = planet(Mars)
@@ -60,6 +61,9 @@ Theta = Mars.lonPer-Earth.lonPer # Angle between Mars perihelion and Earth perih
 
 T_E0 = OT.t_of_M_T( Earth.T, OT.M_of_E( Earth.e, OT.E_of_f( Earth.e, fE0 ) ) ) # Earth Period Advance at Epoch
 T_M0 = OT.t_of_M_T( Mars.T,  OT.M_of_E( Mars.e,  OT.E_of_f( Mars.e,  fM0 ) ) ) # Mars Period Advance at Epoch
+
+out_transfers = np.zeros([16])
+return_transfers = np.zeros([16])
 
 # Loop to solve for trajectories.
 
@@ -103,10 +107,14 @@ for t in xrange(0, t_max + step, step):
         
         a_trans = R_EH/(1-e_trans)
         
-        elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 0)
+        transfer = elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 0)
+        if str(transfer) != 'None':        
+            out_transfers = np.vstack((out_transfers, transfer))        
         
         # Return path options (i.e. The transfer orbit picks up the target planet on second pass of the target's orbit. )
-        elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 1)
+        transfer = elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 1)
+        if str(transfer) != 'None':        
+            out_transfers = np.vstack((out_transfers, transfer))        
         
         e_trans = e_trans - e_step
         
@@ -127,6 +135,15 @@ for t in xrange(0, t_max + step, step):
     while e_trans >= e_H:
         a_trans = R_MH/(1+e_trans)
         
-        elliptical_transfer(f_M, f_E, Theta, e_trans, a_trans, Earth.e, Earth.a, Earth.T, T_E0, Mars.e, Mars.a, Mars.T, T_M0, muSun, 1)
-       
+        transfer = elliptical_transfer(f_M, f_E, Theta, e_trans, a_trans, Earth.e, Earth.a, Earth.T, T_E0, Mars.e, Mars.a, Mars.T, T_M0, muSun, 1)
+        if str(transfer) != 'None':        
+            return_transfers = np.vstack((return_transfers, transfer))
+        
         e_trans = e_trans - e_step
+
+mission_profiles=np.zeros([32])
+for transfer in out_transfers:
+    for return_transfer in return_transfers:
+        if return_transfer[1] - transfer[0] < round_trip_max_days and  return_transfer[0] - transfer[1] > min_stay_time:
+            mission_profiles = np.vstack((mission_profiles, np.hstack((transfer, return_transfer))))
+        

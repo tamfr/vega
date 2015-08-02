@@ -47,6 +47,9 @@ fE0 = 3.5999922*10**2*np.pi/180; fM0 = 3.093210195*10**2*np.pi/180; JDN0 = 24610
 t_max = 86400*365*3 # Length of search window [s]
 step = 86400 # Step size [s] (86400 [s] is one day)
 
+round_trip_max_days = 720 # Maximum round trip time [days]
+min_stay_time = 15 # Minimum stay time on target planet [days]
+
 # Mission requirements
 alt_park_Earth = 330 # Parking orbit altitude [km]
 
