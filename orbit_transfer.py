@@ -44,11 +44,14 @@ def elliptical_transfer(f_POD, f_target, Theta, e_trans, a_trans, e_target, a_ta
     f_PTOA = OT.f_of_E( e_target,  OT.E_of_M( e_target,  OT.M_of_t( T_target,  T_target0 + t + T_trans) ) ) # Target planet true anomaly on arrival.
         
     if abs(f_PTOA-(f_TOA+f_POD-np.cos(lower*np.pi)*Theta-np.pi*lower)) < 0.5*np.pi/180:
-        print 'Date of Fast Transfer [Julian Day Number]: \n' + str(JDN)  
-                    
         f_PODOA = OT.f_of_E( e_POD,  OT.E_of_M( e_POD,  OT.M_of_t( T_POD,  T_POD0 + t + T_trans) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
-        
-        print 'OT.transfer_plot('+str(f_POD) +', ' + str(f_PODOA) +', '+str(f_target)+', '+str(f_TOA+f_POD-np.cos(lower*np.pi)*Theta-np.pi*lower)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(a_POD)+','+ str(e_POD)+', '+str(a_target)+', '+str(e_target)+', '+str(JDN)+')'
+        if lower == 0: 
+            print 'Date of outbound transfer [Julian Day Number]: \n' + str(JDN)  
+            print 'OT.transfer_plot('+str(f_POD) +', ' + str(f_PODOA) +', '+str(f_target)+', '+str(f_TOA+f_POD-np.cos(lower*np.pi)*Theta-np.pi*lower)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(a_POD)+','+ str(e_POD)+', '+str(a_target)+', '+str(e_target)+', '+str(JDN)+')'
+        else:
+            print 'Date of return transfer [Julian Day Number]: \n' + str(JDN)            
+            print 'OT.plot_return('+str(f_M) +', ' + str(f_PODOA) +', '+str(f_E)+', '+str(f_TOA+f_M+Theta-np.pi)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(Mars.a)+','+ str(Mars.e)+', '+str(Earth.a)+', '+str(Earth.e)+', '+str(JDN)+')'
+
 
 Earth = planet(Earth)
 Mars = planet(Mars)
