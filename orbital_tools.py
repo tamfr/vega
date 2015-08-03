@@ -219,7 +219,7 @@ def transfer_plot(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans,
         ax.plot(R(a_target, e_target, f_targetOA)*np.cos(f_targetOA+Theta), R(a_target, e_target, f_targetOA)*np.sin(f_targetOA+Theta), color='g', marker='o', fillstyle='none')  # Plots Mars's position upon MOI.
         ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
 
-        plt.savefig("result" + str(JDN) + ".eps", format="eps")        
+        plt.savefig("Mission Profiles/result" + str(JDN) + ".eps", format="eps")        
         plt.show()
   
 def plot_return(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a_POD, e_POD, a_target, e_target, JDN):
@@ -243,7 +243,7 @@ def plot_return(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a
         ax.plot(R(a_target, e_target, f_targetOA)*np.cos(f_targetOA), R(a_target, e_target, f_targetOA)*np.sin(f_targetOA), color='y', marker='o', fillstyle='none')  # Plots Earth's position upon EOI.
         ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
 
-        plt.savefig("result" + str(JDN) + ".eps", format="eps")        
+        plt.savefig("Mission Profiles/result" + str(JDN) + ".eps", format="eps")        
         plt.show()
       
 def plot_final(f_low, f_low_OA, f_low_return, f_high, f_high_OA, Theta, a_trans, e_trans, a_trans_return, e_trans_return, a_low, e_low, a_high, e_high, JDN):
