@@ -145,32 +145,6 @@ def f_elliptic_transfer(f, Theta, e_trans, a_trans, e_target, a_target, return_p
             f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
     return f_T1
     
-#def f_slow_transfer(f, Theta, e_trans, a_trans, e_target, a_target):
-#    """Elliptical fast transfer.
-#        Requires: 
-#            f: True anomaly of planet of departure at time of transfer;
-#            Theta: Difference between target orbit and orbit of departure longitude of perihelion;            
-#            e_trans: transfer orbit eccentricity;
-#            a_trans: transfer orbit semi-major axis;
-#            e_target: target orbit eccentricity;
-#            a_target: target orbit semi-major axis.
-#    """       
-#    Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
-#    f_T0 = 3*np.pi/2  # Initilize True Anomaly for Loop
-#    f_T1 = 2*np.pi/3 # Initilize True Anomaly for Loop
-#    
-#    while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
-#     
-#        if f_T1 > 2*np.pi:
-#            f_T1 = f_T1-np.pi
-#        elif f_T1 < np.pi:
-#            f_T1 = f_T1+np.pi
-#        else:
-#            f_T0 = f_T1
-#            f_MOA = f_T0+f-Theta
-#            f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
-#        
-#    return f_T1
 
 ####################### Delta V calculations ####################### 
    
@@ -199,7 +173,7 @@ def delta_V_actual_TPI(alt_park, mu_POD, r_POD, delta_v_approx_TPI):
  
 ####################### Plotting orbit transfers #######################
    
-def transfer_plot(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a_POD, e_POD, a_target, e_target, JDN):
+def transfer_plot(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a_POD, e_POD, a_target, e_target, JDN, font):
         fig = plt.figure() # initialize figure
         ax = fig.add_subplot(111) # name of the plot
         f = np.arange(0,2*np.pi,2*np.pi/999)
@@ -219,11 +193,14 @@ def transfer_plot(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans,
         ax.plot(R(a_POD, e_POD, f_PODOA)*np.cos(f_PODOA), R(a_POD, e_POD, f_PODOA)*np.sin(f_PODOA), color='b', marker='o', fillstyle='none')  # Plots Earth's position upon MOI.        
         ax.plot(R(a_target, e_target, f_targetOA)*np.cos(f_targetOA+Theta), R(a_target, e_target, f_targetOA)*np.sin(f_targetOA+Theta), color='g', marker='o', fillstyle='none')  # Plots Mars's position upon MOI.
         ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
+        
+        plt.xlabel('distance [km]', fontdict=font)
+        plt.ylabel('distance [km]', fontdict=font)
 
         plt.savefig("Mission Profiles/result_" + str(JDN) + ".eps", format="eps")        
         plt.show()
   
-def plot_return(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a_POD, e_POD, a_target, e_target, JDN):
+def plot_return(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a_POD, e_POD, a_target, e_target, JDN, font):
         fig = plt.figure() # initialize figure
         ax = fig.add_subplot(111) # name of the plot
         f = np.arange(0,2*np.pi,2*np.pi/999)
@@ -243,7 +220,10 @@ def plot_return(f_POD, f_PODOA, f_target, f_targetOA, Theta, a_trans, e_trans, a
         ax.plot(R(a_POD, e_POD, f_PODOA)*np.cos(f_PODOA+Theta), R(a_POD, e_POD, f_PODOA)*np.sin(f_PODOA+Theta), color='r', marker='o', fillstyle='none')  # Plots Mars's position upon EOI.        
         ax.plot(R(a_target, e_target, f_targetOA)*np.cos(f_targetOA), R(a_target, e_target, f_targetOA)*np.sin(f_targetOA), color='y', marker='o', fillstyle='none')  # Plots Earth's position upon EOI.
         ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
-
+        
+        plt.xlabel('distance [km]', fontdict=font)
+        plt.ylabel('distance [km]', fontdict=font)        
+        
         plt.savefig(os.path.abspath(__file__)+"/Mission Profiles/result_" + str(JDN) + ".eps", format="eps")        
         plt.show()
       

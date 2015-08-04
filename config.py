@@ -54,3 +54,11 @@ min_stay_time = 15 # Minimum stay time on target planet [days]
 alt_park_Earth = 330 # Parking orbit altitude [km]
 
 alt_park_Mars = 150 # Parking orbit altitude [km]
+
+###### Output ######
+
+font = {'family' : 'serif',
+        'color'  : 'black',
+        'weight' : 'normal',
+        'size'   : 16,
+        }

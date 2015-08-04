@@ -10,7 +10,7 @@ Created on Tue Jul 28 17:46:15 2015
 # 3. Inclination and Orbital Precession are Neglected
 
 from __future__ import division
-from config import Earth, Mars, fE0, fM0, t_max, muSun, JDN0, step, round_trip_max_days, min_stay_time
+from config import Earth, Mars, fE0, fM0, t_max, muSun, JDN0, step, round_trip_max_days, min_stay_time, font
 from planets import planet
 import orbital_tools as OT
 import numpy as np
@@ -91,7 +91,7 @@ for t in xrange(0, t_max + step, step):
         
         f_EOMA = OT.f_of_E( Earth.e,  OT.E_of_M( Earth.e,  OT.M_of_t( Earth.T,  T_E0 + t + T_H) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
         
-        OT.transfer_plot(f_E, f_EOMA, f_M, f_MHA, Theta, a_H, e_H, Earth.a, Earth.e, Mars.a, Mars.e, JDN)
+        OT.transfer_plot(f_E, f_EOMA, f_M, f_MHA, Theta, a_H, e_H, Earth.a, Earth.e, Mars.a, Mars.e, JDN, font)
         
         print 'Date of Hohmann Departure [Julian Day Number]: \n' + str(JDN)        
         print 'Transfer Time [Days]:' + str(T_H/86400) + '\n'
