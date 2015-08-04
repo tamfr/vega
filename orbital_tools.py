@@ -255,6 +255,6 @@ def plot_final(f_low, f_low_OA, f_low_return, f_high, f_high_OA, Theta, a_trans,
         plt.savefig("result" + str(JDN) + ".eps", format="eps")        
         plt.show()
 
-def plot_mission(mission_profiles, m, Theta):
-    transfer_plot(mission_profiles[m,9], mission_profiles[m,13], mission_profiles[m,10], mission_profiles[m,12], Theta, mission_profiles[m,3], mission_profiles[m,4], mission_profiles[m,7], mission_profiles[m,8], mission_profiles[m,5], mission_profiles[m,6], mission_profiles[m,0])
-    plot_return(mission_profiles[m,10+16], mission_profiles[m,13+16], mission_profiles[m,9+16], mission_profiles[m,12+16], Theta, mission_profiles[m,3+16], mission_profiles[m,4+16], mission_profiles[m,7+16], mission_profiles[m,8+16], mission_profiles[m,5+16], mission_profiles[m,6+16], mission_profiles[m,0+16])
+def plot_mission(mission_profiles, m, Theta, font):
+    transfer_plot(mission_profiles[m,9], mission_profiles[m,13], mission_profiles[m,10], mission_profiles[m,12], Theta, mission_profiles[m,3], mission_profiles[m,4], mission_profiles[m,7], mission_profiles[m,8], mission_profiles[m,5], mission_profiles[m,6], mission_profiles[m,0], font)
+    plot_return(mission_profiles[m,10+16], mission_profiles[m,13+16], mission_profiles[m,9+16], mission_profiles[m,12+16], Theta, mission_profiles[m,3+16], mission_profiles[m,4+16], mission_profiles[m,7+16], mission_profiles[m,8+16], mission_profiles[m,5+16], mission_profiles[m,6+16], mission_profiles[m,0+16], font)

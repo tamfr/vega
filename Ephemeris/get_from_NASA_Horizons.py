@@ -5,11 +5,11 @@ Created on Mon Jul 27 22:43:21 2015
 @author: Mott
 """
 
-import telnetlib, re
+import telnetlib#, re
 
-body="499"
-begin="2021-JAN-01 13:51"
-end="2021-JAN-04 13:51"
+body="399"
+begin="2030-JAN-01 10:12"
+end="2030-JAN-04 10:12"
 
 #def ephemeris(body, begin, end):
 t = telnetlib.Telnet()
@@ -41,10 +41,10 @@ with open('results.txt', 'w') as fp:
         t.write(expect[answer[0]][1])
 
 # Loop finds all instances of 'EC=' as a generator and averages the values that follow 'EC='.
-tot = 0
-i = 0
-for m in re.finditer('EC=', ephemeri[2]): 
-    i+=1    
-    tot = (tot + float(ephemeri[2][m.start() + 4 : m.start() + 25]))  
-
-print tot/i
+#tot = 0
+#i = 0
+#for m in re.finditer('EC=', ephemeri[2]): 
+#    i+=1    
+#    tot = (tot + float(ephemeri[2][m.start() + 4 : m.start() + 25]))  
+#
+#print tot/i

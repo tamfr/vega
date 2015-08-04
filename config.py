@@ -41,14 +41,14 @@ Mars = {
 # fE0 = (4.54323446*10**(-4))*np.pi/180; fM0 = 319.4234417*pi/180; JDN0 = 2455565.2736 # Date of Epoch: 03 Jan 2011 18:34:00 UT
 # fE0 = (7.8331757*10**(-1))*np.pi/180; fM0 = 199.18562*pi/180; JDN0 = 2457391.2736 # Date of Epoch: 03 Jan 2016 18:34:00 UT
 #fE0 = 3.5999934*10**2*np.pi/180; fM0 = 9.0419941*10**1*np.pi/180; JDN0 = 2459217.0770 # Date of Epoch: 02 Jan 2021 13:51:00 UT
-fE0 = 3.5999922*10**2*np.pi/180; fM0 = 3.093210195*10**2*np.pi/180; JDN0 = 2461044.2194 # Date of Epoch: 03 Jan 2026 17:16:00 UT
-# fE0 = (3.5988321*10**(2))*np.pi/180; fM0 = 192.14974*np.pi/180; JDN0 = 2462871.2736 # Date of Epoch: 04 Jan 2031 18:34:00 UT
+#fE0 = 3.5999922*10**2*np.pi/180; fM0 = 3.093210195*10**2*np.pi/180; JDN0 = 2461044.2194 # Date of Epoch: 03 Jan 2026 17:16:00 UT
+fE0 = 3.5999920*10**2*np.pi/180; fM0 = 3.092161746*np.pi/180; JDN0 = 2462504.9250 # Date of Epoch: 03 Jan 2030 10:12:00 UT
  
-t_max = 86400*365*3 # Length of search window [s]
+t_max = 86400*365*5 # Length of search window [s]
 step = 86400 # Step size [s] (86400 [s] is one day)
 
 round_trip_max_days = 720 # Maximum round trip time [days]
-min_stay_time = 15 # Minimum stay time on target planet [days]
+min_stay_time = 20 # Minimum stay time on target planet [days]
 
 # Mission requirements
 alt_park_Earth = 330 # Parking orbit altitude [km]
