@@ -15,7 +15,24 @@ from planets import planet
 import orbital_tools as OT
 import numpy as np
 
-def elliptical_transfer(f_POD, f_target, Theta, e_trans, a_trans, e_target, a_target, T_target, T_target0, e_POD, a_POD, T_POD, T_POD0, mu, return_path_option):
+def elliptical_transfer(
+    f_POD, 
+    f_target, 
+    Theta, 
+    e_trans, 
+    a_trans, 
+    e_target, 
+    a_target, 
+    T_target, 
+    T_target0, 
+    e_POD, 
+    a_POD, 
+    T_POD, 
+    T_POD0, 
+    mu, 
+    return_path_option = 0,
+    ):
+
     """Elliptical transfer.
         Requires: 
             f_POD: true anomaly of planet of departure at time of transfer;
@@ -59,8 +76,17 @@ Mars = planet(Mars)
 
 Theta = Mars.lonPer-Earth.lonPer # Angle between Mars perihelion and Earth perihelion.
 
-T_E0 = OT.t_of_M_T( Earth.T, OT.M_of_E( Earth.e, OT.E_of_f( Earth.e, fE0 ) ) ) # Earth Period Advance at Epoch
-T_M0 = OT.t_of_M_T( Mars.T,  OT.M_of_E( Mars.e,  OT.E_of_f( Mars.e,  fM0 ) ) ) # Mars Period Advance at Epoch
+ # Earth Period Advance at Epoch
+
+E = OT.E_of_f( Earth.e, fE0 )
+M = OT.M_of_E( Earth.e, E )
+T_E0 = OT.t_of_M_T( Earth.T, M )
+
+# Mars Period Advance at Epoch
+
+E = OT.E_of_f( Mars.e,  fM0 )
+M = OT.M_of_E( Mars.e,  E) 
+T_M0 = OT.t_of_M_T( Mars.T,  M ) 
 
 out_transfers = np.zeros([16])
 return_transfers = np.zeros([16])
