@@ -98,7 +98,7 @@ for t in xrange(0, t_max + step, step):
     #print JDN
     # Planet positions over time.
     f_E = Earth.f(T_E0 + t) # Earth True anomaly given period advance from epoch
-    f_M = OT.f_of_E( Mars.e,  OT.E_of_M( Mars.e,  OT.M_of_t( Mars.T,  T_M0 + t ) ) ) # Mars True anomaly given period advance from epoch
+    f_M = Mars.f(T_M0 +t) # Mars True anomaly given period advance from epoch
     
     ##########################################
     ######## Hohmann Transfer Options ########
