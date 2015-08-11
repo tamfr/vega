@@ -26,7 +26,9 @@ expect = ( ( r'Horizons>', body + '\n' ),
            ( r'Accept default output.*:', 'y\n'),
            ( r'Select\.\.\. .A.gain.* :', 'X\n' )
 )
+
 n=0 
+
 with open('results.txt', 'w') as fp:
     while True:
         try:

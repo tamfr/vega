@@ -103,19 +103,21 @@ for t in xrange(0, t_max + step, step):
     ##########################################
     ######## Hohmann Transfer Options ########
     
-    f_MH = f_E - Theta + np.pi # Mars true anomaly on arrival for Hohmann transfer.
-    R_MH = Mars.a*(1 - Mars.e**2)/(1 + Mars.e*np.cos(f_MH)) # Radial distance to Mars for Hohmann transfer.
-    R_EH = Earth.a*(1 - Earth.e**2)/(1 + Earth.e*np.cos(f_E)) # Radial distance to Earth for Hohmann transfer.
+    f_MH = f_E - Theta + np.pi                                 # Mars true anomaly on arrival for Hohmann transfer.
+    R_MH = Mars.a*(1 - Mars.e**2)/(1 + Mars.e*np.cos(f_MH))    # Radial distance to Mars for Hohmann transfer.
+    R_EH = Earth.a*(1 - Earth.e**2)/(1 + Earth.e*np.cos(f_E))  # Radial distance to Earth for Hohmann transfer.
     a_H = (R_MH + R_EH) / 2
     e_H = (R_MH - R_EH) / (R_MH + R_EH)
-    T_H = np.pi*(a_H**3/muSun)**(1/2)
+    T_H = np.pi*(a_H**3 / muSun)**(1/2)
     
     f_MHA = OT.f_of_E( Mars.e,  OT.E_of_M( Mars.e,  OT.M_of_t( Mars.T,  T_M0 + t + T_H) ) ) # Mars true anomaly after desired Hohmann transfer time.
 
     
     if abs(f_MHA-f_MH) < 0.5*np.pi/180:
         
-        f_EOMA = OT.f_of_E( Earth.e,  OT.E_of_M( Earth.e,  OT.M_of_t( Earth.T,  T_E0 + t + T_H) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
+        M = OT.M_of_t( Earth.T,  T_E0 + t + T_H)        
+        E = OT.E_of_M( Earth.e,  M )
+        f_EOMA = OT.f_of_E( Earth.e,  E ) # Earth true anomaly on Mars arrival for Hohmann transfer.
         
         OT.transfer_plot(f_E, f_EOMA, f_M, f_MHA, Theta, a_H, e_H, Earth.a, Earth.e, Mars.a, Mars.e, JDN, font)
         

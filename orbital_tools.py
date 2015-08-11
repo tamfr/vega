@@ -9,28 +9,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-def R(a,e,f):
+def R(a, e, f):
     return a*(1 - e**2)/(1 + e*np.cos(f))
 
-####################### Orbital elements given time #######################
+####################### Orbital elements given time ###########################
 
-def M_of_t(T,t): 
+def M_of_t(T, t): 
     """Mean anomaly as fucntion of time.
         Requires period.
     """    
-    return (2*np.pi/T)*((t)-int((t)/T)*T)    
+    return (2*np.pi/T)*(t - int(t/T)*T)    
 
-def E_of_M(e,M): 
+def E_of_M(e, M): 
     """Eccentric anomaly as fucntion of mean anomaly.
         Requires eccentritcity.
     """
     count = 0
-    # Iteration Loop to Find Eccentric Anomaly
     
-    E0 = -np.pi # Initilize Eccentric Anomaly for Loop
-    E1 = M+(e+np.cos(M))*np.sin(M) # Initilize Eccentric Anomaly for Loop
+    E0 = -np.pi                     # Initilize Eccentric Anomaly for Loop
+    E1 = M+(e+np.cos(M))*np.sin(M)  # Initilize Eccentric Anomaly for Loop
     
-    while abs(E1-E0) > 0.0005: # Condition On Which to Run Loop
+    # Iteration Loop to Find Eccentric Anomaly using Newton's method.
+    
+    while abs(E1 - E0) > 0.0005:
         count += 1        
         if E1 > 2*np.pi:
             E1 = E1 - 2*np.pi
@@ -38,18 +39,18 @@ def E_of_M(e,M):
             E1 = E1 + np.pi
         else:
             E0 = E1
-            E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0)) # Newton's Root Finding Method
+            E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0))
     return E1
 
-def E_of_M_old(e,M):    
+def E_of_M_old(e, M):    
     """Eccentric anomaly as fucntion of mean anomaly.
         Requires eccentritcity.
     """
     count = 0
     # Iteration Loop to Find Eccentric Anomaly
     
-    E0 = np.pi/3 # Initilize Eccentric Anomaly for Loop
-    E1 = -np.pi/2 # Initilize Eccentric Anomaly for Loop
+    E0 = np.pi/3   # Initilize Eccentric Anomaly for Loop
+    E1 = -np.pi/2  # Initilize Eccentric Anomaly for Loop
     
     while abs(E1-E0) > 0.0005: # Condition On Which to Run Loop
         count += 1        
@@ -59,10 +60,10 @@ def E_of_M_old(e,M):
             E1 = E1 + np.pi
         else:
             E0 = E1
-            E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0)) # Newton's Root Finding Method
+            E1 = E0 - (E0 - e*np.sin(E0) - M) / (1 - e*np.cos(E0))
     return (E1,count)
     
-def f_of_E(e,E):
+def f_of_E(e, E):
     """True anomaly as fucntion of eccentric anomaly.
         Requires eccentritcity.
     """
@@ -76,63 +77,78 @@ def f_of_E(e,E):
     
     return f
     
-####################### Orbital elements given true anomaly #######################
+################### Orbital elements given true anomaly #######################
 
-def E_of_f(e,f):
+def E_of_f(e, f):
     """Eccentric anomaly as fucntion of true anomaly.
         Requires eccentritcity.
     """    
-    E = 2*np.arctan(((1-e)/(1+e))**(1/2)*np.tan(f/2)) # Determines Transfer Orbit Eccentric Anomaly    
+    E = 2*np.arctan(((1-e)/(1+e))**(1/2)*np.tan(f/2))   
+    
     # Test to Make Sure Eccentric Anomaly is Greater than 0.
+    
     if E < 0:
         E = E + 2*np.pi
         
     return E
 
-def M_of_E(e,E):
+def M_of_E(e, E):
     """Mean anomaly as fucntion of eccentric anomaly.
         Requires eccentritcity.
     """ 
-    return E-e*np.sin(E)
+    return E - e*np.sin(E)
     
-def t_of_M_a(a,mu,M):
+def t_of_M_a(a, mu, M):
     """Mean anomaly as fucntion of eccentric anomaly.
-        Requires semi-major axis and standard gravitational parameter of the central body.
+        Requires semi-major axis and standard gravitational parameter of the 
+        central body.
     """ 
-    return M*(a**3/mu)**(1/2)
+    return M*(a**3 / mu)**(1/2)
 
 def t_of_M_T(T,M):
     """Mean anomaly as fucntion of eccentric anomaly.
-        Requires semi-major axis and standard gravitational parameter of the central body.
+        Requires semi-major axis and standard gravitational parameter of the 
+        central body.
     """ 
-    return M*T/(2*np.pi)
+    return M*T / (2*np.pi)
 
 
-####################### Non-Hohmann Elliptical Transfers #######################
+####################### Non-Hohmann Elliptical Transfers ######################
 
-def f_elliptic_transfer(f, Theta, e_trans, a_trans, e_target, a_target, return_path_option, lower):
+def f_elliptic_transfer(
+    f, 
+    Theta, 
+    e_trans, 
+    a_trans, 
+    e_target, 
+    a_target, 
+    return_path_option, 
+    lower
+    ):
+        
     """Elliptical transfer true anomaly.
         Requires: 
             f: True anomaly of planet of departure at time of transfer;
-            Theta: Difference between target orbit and orbit of departure longitude of perihelion;            
+            Theta: Difference of target orbit and orbit of departure 
+                   longitude of perihelion;            
             e_trans: transfer orbit eccentricity;
             a_trans: transfer orbit semi-major axis;
             e_target: target orbit eccentricity;
             a_target: target orbit semi-major axis;
             mu: standard gravitational parameter of the central body.
-    """       
+    """          
+    Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))    
+    
     low = (not return_path_option and lower)
-    high = (return_path_option and not lower)    
+    high = (return_path_option and not lower)         
     
-    
-    Y = a_trans*(1-e_trans**2)/(a_target*(1-e_target**2))
     if lower == 0:
         f_T0 = np.pi/3*(not return_path_option) + 3*np.pi/2*(return_path_option)  # Initilize True Anomaly for Loop
-        f_T1 = -np.pi/2*(not return_path_option)  + 2*np.pi/3*(return_path_option) # Initilize True Anomaly for Loop
+        f_T1 = -np.pi/2*(not return_path_option) + 2*np.pi/3*(return_path_option) # Initilize True Anomaly for Loop
     
     if lower == 1:
         f_T0 = 3*np.pi/2*(not return_path_option) + np.pi/3*( return_path_option)  # Initilize True Anomaly for Loop
-        f_T1 = -np.pi*(not return_path_option)  + -np.pi/3*(return_path_option)# Initilize True Anomaly for Loop
+        f_T1 = -np.pi*(not return_path_option) + -np.pi/3*(return_path_option)# Initilize True Anomaly for Loop
 
     while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
         if f_T1 > np.pi*(((not return_path_option and not lower) + (return_path_option and lower)) + 2*(high+low)):
@@ -141,8 +157,10 @@ def f_elliptic_transfer(f, Theta, e_trans, a_trans, e_target, a_target, return_p
             f_T1 = f_T1+np.pi
         else:
             f_T0 = f_T1
-            f_MOA = f_T0+f-np.cos(lower*np.pi)*Theta-np.pi*lower # np.cos(lower*np.pi) serves as a switch to make Theta negative and kind serves as an on/off switch for subtracting pi.
-            f_T1 = f_T0-(1+e_trans*np.cos(f_T0)-Y-Y*e_target*np.cos(f_MOA))/(Y*e_target*np.sin(f_MOA)-e_trans*np.sin(f_T0)) # Newton's Root Finding Method
+            f_MOA = f_T0 + f - np.cos(lower*np.pi)*Theta-np.pi*lower # np.cos(lower*np.pi) serves as a switch to make Theta negative and kind serves as an on/off switch for subtracting pi.
+            function = 1 + e_trans*np.cos(f_T0) - Y - Y*e_target*np.cos(f_MOA)        
+            derivative = Y*e_target*np.sin(f_MOA) - e_trans*np.sin(f_T0)           
+            f_T1 = f_T0 - function/derivative
     return f_T1
     
 
