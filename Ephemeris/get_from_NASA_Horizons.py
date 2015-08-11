@@ -40,6 +40,8 @@ with open('results.txt', 'w') as fp:
         fp.flush()
         t.write(expect[answer[0]][1])
 
+t.close()
+
 # Loop finds all instances of 'EC=' as a generator and averages the values that follow 'EC='.
 #tot = 0
 #i = 0
