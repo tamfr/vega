@@ -6,6 +6,7 @@ Created on Mon Jul 27 21:20:51 2015
 """
 from __future__ import division
 import numpy as np
+import orbital_tools as OT
 
 muSun = 2.9591230378107664 * 10**(-4) * 149597870**3 / 86400**2 # Sun Standard Gravitational Parameter [km^3/s^2]
 
@@ -32,3 +33,18 @@ class planet(object):
         self.mu = planet['mu']                              # Standard Graviational Parameter [km^3/s^2]
         self.g = planet['g']                                # Gravitational Acceleration [km/s^2]
         self.lonPer = planet['lonPer']                      # Longitude of Perihelion [radians] 
+    
+    def M(self, t):    
+        M = OT.M_of_t( self.T, t )    
+        return M
+        
+    def E(self, t):    
+        M = OT.M_of_t( self.T, t )
+        E = OT.E_of_M( self.e, M )
+        return E
+        
+    def f(self, t):
+        M = OT.M_of_t( self.T, t )
+        E = OT.E_of_M( self.e, M )
+        f = OT.f_of_E( self.e, E )
+        return f
