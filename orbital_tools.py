@@ -152,7 +152,7 @@ def f_elliptic_transfer(
         f_T0 = 3*np.pi/2*(not return_path_option) + np.pi/3*( return_path_option)
         f_T1 = -np.pi*(not return_path_option) + -np.pi/3*(return_path_option)
 
-    while abs(f_T1-f_T0) > 0.0005: # Condition On Which to Run Loop
+    while abs(f_T1-f_T0) > 0.0005:
         if f_T1 > np.pi*(((not return_path_option and not lower) + (return_path_option and lower)) + 2*(high+low)):
             f_T1 = f_T1-np.pi
         elif f_T1 < np.pi*(high + low):
@@ -166,7 +166,7 @@ def f_elliptic_transfer(
     return f_T1
     
 
-####################### Delta V calculations ####################### 
+####################### Delta V calculations ################################## 
    
 def delta_V_approx_TPI(e_trans, a_trans, a_POD, R_POD, mu_central_body):
     """Approximate Delta V for trans-planet injection [km/s].
@@ -195,7 +195,7 @@ def delta_V_actual_TPI(alt_park, mu_POD, r_POD, ADV_TPI):
     
     return ((e_h + 1)/(e_h - 1))^(1/2)*ADV_TPI-(mu_POD/PerHyper)^(1/2)
  
-####################### Plotting orbit transfers #######################
+####################### Plotting orbit transfers ##############################
    
 def transfer_plot(
     f_POD, 
@@ -213,6 +213,23 @@ def transfer_plot(
     font,
     ):
     
+    """Plots transfer on ecliptic plane.
+        Requires: 
+            f_POD: True anomaly of planet of departure at time of transfer;
+            f_PODOA: True anomaly of planet of departure upon arrival;
+            f_target: True anomaly of destination planet at time of transfer;
+            f_targetOA: True anomaly of destination planet upon arrival;
+            Theta: Difference of target orbit and orbit of departure 
+                   longitude of perihelion;            
+            a_trans: transfer orbit semi-major axis;
+            e_trans: transfer orbit eccentricity;
+            a_POD: planet of departure orbit semi-major axis;
+            e_POD: planet of departure orbit eccentricity;
+            a_target: target orbit semi-major axis;
+            e_target: target orbit eccentricity;
+            JDN: Julian Date Number;
+            font: font for plot.
+    """
     fig = plt.figure() # initialize figure
     ax = fig.add_subplot(111) # name of the plot
     f = np.arange(0,2*np.pi,2*np.pi/999)
@@ -255,6 +272,23 @@ def plot_return(
     font,
     ):
     
+    """Plots transfer on ecliptic plane.
+        Requires: 
+            f_POD: True anomaly of planet of departure at time of transfer;
+            f_PODOA: True anomaly of planet of departure upon arrival;
+            f_target: True anomaly of destination planet at time of transfer;
+            f_targetOA: True anomaly of destination planet upon arrival;
+            Theta: Difference of target orbit and orbit of departure 
+                   longitude of perihelion;            
+            a_trans: transfer orbit semi-major axis;
+            e_trans: transfer orbit eccentricity;
+            a_POD: planet of departure orbit semi-major axis;
+            e_POD: planet of departure orbit eccentricity;
+            a_target: target orbit semi-major axis;
+            e_target: target orbit eccentricity;
+            JDN: Julian Date Number;
+            font: font for plot.
+    """
     fig = plt.figure() # initialize figure
     ax = fig.add_subplot(111) # name of the plot
     f = np.arange(0,2*np.pi,2*np.pi/999)
