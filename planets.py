@@ -8,7 +8,9 @@ from __future__ import division
 import numpy as np
 import orbital_tools as OT
 
-muSun = 2.9591230378107664 * 10**(-4) * 149597870**3 / 86400**2 # Sun Standard Gravitational Parameter [km^3/s^2]
+# Sun Standard Gravitational Parameter [km^3/s^2]
+
+muSun = 2.9591230378107664 * 10**(-4) * 149597870**3 / 86400**2
 
 class planet(object):
     """Planet defines parameters of a planet:
@@ -33,6 +35,7 @@ class planet(object):
         self.mu = planet['mu']                              # Standard Graviational Parameter [km^3/s^2]
         self.g = planet['g']                                # Gravitational Acceleration [km/s^2]
         self.lonPer = planet['lonPer']                      # Longitude of Perihelion [radians] 
+        self.orbit = OT.orbit(self.a, self.e)
     
     def M(self, t):    
         M = OT.M_of_t( self.T, t )    

@@ -9,6 +9,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+class orbit():
+    def __init__(self, a, e):        
+        self.a = a
+        self.e = e        
+        f = np.arange(0,2*np.pi,2*np.pi/999)    
+        self.R = R(self.a, self.e, f)
+        self.x = self.R*np.cos(f)
+        self.y = self.R*np.sin(f)
+
 def R(a, e, f):
     return a*(1 - e**2)/(1 + e*np.cos(f))
 
@@ -26,8 +35,10 @@ def E_of_M(e, M):
     """
     count = 0
     
-    E0 = -np.pi                     # Initilize Eccentric Anomaly for Loop
-    E1 = M+(e+np.cos(M))*np.sin(M)  # Initilize Eccentric Anomaly for Loop
+    # Initilize Eccentric Anomaly for Loop
+    
+    E0 = -np.pi                     
+    E1 = M+(e+np.cos(M))*np.sin(M)
     
     # Iteration Loop to Find Eccentric Anomaly using Newton's method.
     
@@ -232,16 +243,25 @@ def transfer_plot(
     """
     fig = plt.figure() # initialize figure
     ax = fig.add_subplot(111) # name of the plot
+    ax.set_aspect('equal')    
+    
     f = np.arange(0,2*np.pi,2*np.pi/999)
-    ax.set_aspect('equal')
     
     R_T = a_trans*(1 - e_trans**2)/(1 + e_trans*np.cos(f))
     R_E = a_POD*(1 - e_POD**2)/(1 + e_POD*np.cos(f))
     R_M = a_target*(1 - e_target**2)/(1 + e_target*np.cos(f))
-        
-    ax.plot(R_T*np.cos(f+f_POD), R_T*np.sin(f+f_POD), color='g', lw=1)     # Plots the transfer's orbit in green.
-    ax.plot(R_E*np.cos(f), R_E*np.sin(f), color='b', lw=1)             # Plots Earth's orbit in blue.
-    ax.plot(R_M*np.cos(f+Theta), R_M*np.sin(f+Theta), color='r', lw=1) # Plots Mars's orbit in red.
+    
+    # Plots the transfer's orbit in green.
+    
+    ax.plot(R_T*np.cos(f+f_POD), R_T*np.sin(f+f_POD), color='green', lw=1)
+    
+    # Plots Earth's orbit in blue.
+    
+    ax.plot(R_E*np.cos(f), R_E*np.sin(f), color='blue', lw=1)
+    
+    # Plots Mars's orbit in red.
+    
+    ax.plot(R_M*np.cos(f+Theta), R_M*np.sin(f+Theta), color='red', lw=1)
     
     ax.plot(R(a_POD, e_POD, f_POD)*np.cos(f_POD), R(a_POD, e_POD, f_POD)*np.sin(f_POD), color='b', marker='o')              # Plots Earth's position upon TMI.
     ax.plot(R(a_target, e_target, f_target)*np.cos(f_target+Theta), R(a_target, e_target, f_target)*np.sin(f_target+Theta), color='r', marker='o')      # Plots Mars's position upon TMI.       
