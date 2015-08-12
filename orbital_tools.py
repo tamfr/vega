@@ -11,9 +11,9 @@ import os
 
 class orbit():
     def __init__(self, a, e):        
+        f = np.arange(0,2*np.pi,2*np.pi/999)        
         self.a = a
         self.e = e        
-        f = np.arange(0,2*np.pi,2*np.pi/999)    
         self.R = R(self.a, self.e, f)
         self.x = self.R*np.cos(f)
         self.y = self.R*np.sin(f)
@@ -216,10 +216,8 @@ def transfer_plot(
     Theta, 
     a_trans, 
     e_trans, 
-    a_POD, 
-    e_POD, 
-    a_target, 
-    e_target, 
+    POD, 
+    target,  
     JDN, 
     font,
     ):
@@ -234,10 +232,8 @@ def transfer_plot(
                    longitude of perihelion;            
             a_trans: transfer orbit semi-major axis;
             e_trans: transfer orbit eccentricity;
-            a_POD: planet of departure orbit semi-major axis;
-            e_POD: planet of departure orbit eccentricity;
-            a_target: target orbit semi-major axis;
-            e_target: target orbit eccentricity;
+            POD: planet of departure (instance);
+            target: target planet (instance);
             JDN: Julian Date Number;
             font: font for plot.
     """
@@ -248,26 +244,20 @@ def transfer_plot(
     f = np.arange(0,2*np.pi,2*np.pi/999)
     
     R_T = a_trans*(1 - e_trans**2)/(1 + e_trans*np.cos(f))
-    R_E = a_POD*(1 - e_POD**2)/(1 + e_POD*np.cos(f))
-    R_M = a_target*(1 - e_target**2)/(1 + e_target*np.cos(f))
     
-    # Plots the transfer's orbit in green.
+    # Plot orbits.
     
-    ax.plot(R_T*np.cos(f+f_POD), R_T*np.sin(f+f_POD), color='green', lw=1)
+    ax.plot(R_T*np.cos(f+f_POD), R_T*np.sin(f+f_POD), color = 'green', lw = 1)
     
-    # Plots Earth's orbit in blue.
+    ax.plot(POD.orbit.x, POD.orbit.y, color = 'blue', lw = 1)
+        
+    ax.plot(target.orbit.x, target.orbit.y, color = 'red', lw = 1)
     
-    ax.plot(R_E*np.cos(f), R_E*np.sin(f), color='blue', lw=1)
+    ax.plot(R(POD.a, POD.e, f_POD)*np.cos(f_POD), R(POD.a, POD.e, f_POD)*np.sin(f_POD), color='b', marker='o')              # Plots Earth's position upon TMI.
+    ax.plot(R(target.a, target.e, f_target)*np.cos(f_target+Theta), R(target.a, target.e, f_target)*np.sin(f_target+Theta), color='r', marker='o')      # Plots Mars's position upon TMI.       
     
-    # Plots Mars's orbit in red.
-    
-    ax.plot(R_M*np.cos(f+Theta), R_M*np.sin(f+Theta), color='red', lw=1)
-    
-    ax.plot(R(a_POD, e_POD, f_POD)*np.cos(f_POD), R(a_POD, e_POD, f_POD)*np.sin(f_POD), color='b', marker='o')              # Plots Earth's position upon TMI.
-    ax.plot(R(a_target, e_target, f_target)*np.cos(f_target+Theta), R(a_target, e_target, f_target)*np.sin(f_target+Theta), color='r', marker='o')      # Plots Mars's position upon TMI.       
-    
-    ax.plot(R(a_POD, e_POD, f_PODOA)*np.cos(f_PODOA), R(a_POD, e_POD, f_PODOA)*np.sin(f_PODOA), color='b', marker='o', fillstyle='none')  # Plots Earth's position upon MOI.        
-    ax.plot(R(a_target, e_target, f_targetOA)*np.cos(f_targetOA+Theta), R(a_target, e_target, f_targetOA)*np.sin(f_targetOA+Theta), color='g', marker='o', fillstyle='none')  # Plots Mars's position upon MOI.
+    ax.plot(R(POD.a, POD.e, f_PODOA)*np.cos(f_PODOA), R(POD.a, POD.e, f_PODOA)*np.sin(f_PODOA), color='b', marker='o', fillstyle='none')  # Plots Earth's position upon MOI.        
+    ax.plot(R(target.a, target.e, f_targetOA)*np.cos(f_targetOA+Theta), R(target.a, target.e, f_targetOA)*np.sin(f_targetOA+Theta), color='g', marker='o', fillstyle='none')  # Plots Mars's position upon MOI.
     ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
     
     plt.xlabel('distance [km]', fontdict = font)
@@ -337,5 +327,5 @@ def plot_return(
       
 
 def plot_mission(mission_profiles, m, Theta, font):
-    transfer_plot(mission_profiles[m,9], mission_profiles[m,13], mission_profiles[m,10], mission_profiles[m,12], Theta, mission_profiles[m,3], mission_profiles[m,4], mission_profiles[m,7], mission_profiles[m,8], mission_profiles[m,5], mission_profiles[m,6], mission_profiles[m,0], font)
-    plot_return(mission_profiles[m,10+16], mission_profiles[m,13+16], mission_profiles[m,9+16], mission_profiles[m,12+16], Theta, mission_profiles[m,3+16], mission_profiles[m,4+16], mission_profiles[m,7+16], mission_profiles[m,8+16], mission_profiles[m,5+16], mission_profiles[m,6+16], mission_profiles[m,0+16], font)
+    transfer_plot(mission_profiles[m,7], mission_profiles[m,11], mission_profiles[m,8], mission_profiles[m,10], Theta, mission_profiles[m,3], mission_profiles[m,4], mission_profiles[m,5], mission_profiles[m,6], mission_profiles[m,0], font)
+    plot_return(mission_profiles[m,7+14], mission_profiles[m,11+14], mission_profiles[m,7+14], mission_profiles[m,10+14], Theta, mission_profiles[m,3+16], mission_profiles[m,4+16], mission_profiles[m,5], mission_profiles[m,6], mission_profiles[m,0+14], font)

@@ -21,13 +21,9 @@ def elliptical_transfer(
     Theta, 
     e_trans, 
     a_trans, 
-    e_target, 
-    a_target, 
-    T_target, 
+    target,  
     T_target0, 
-    e_POD, 
-    a_POD, 
-    T_POD, 
+    POD, 
     T_POD0, 
     mu, 
     return_path_option = 0,
@@ -40,36 +36,32 @@ def elliptical_transfer(
             Theta: difference between target orbit and orbit of departure longitude of perihelion;            
             e_trans: transfer orbit eccentricity;
             a_trans: transfer orbit semi-major axis;
-            e_target: target orbit eccentricity;
-            a_target: target orbit semi-major axis;
-            T_target: target orbit period;
+            target: target planet (instance);
             T_target0: target orbit period advance at epoch;
-            e_POD: planet of departure orbit eccentricity;
-            a_POD: planet of departure orbit seim-major axis;
-            T_POD: planet of departure orbit period;
+            POD: planet of departure (instance);
             T_POD0: planet of departure period advnace at epoch;
             mu: standard gravitational parameter of central body;
             return_path_option: set 1 for yes and 0 for no.
     """
     
-    lower = (a_target < a_POD) # Kind is either 0 for raising orbit and 1 for lowering orbit.
+    lower = (target.a < POD.a) # Kind is either 0 for raising orbit and 1 for lowering orbit.
     
-    f_TOA = OT.f_elliptic_transfer(f_POD, Theta, e_trans, a_trans, e_target, a_target, return_path_option, lower) # True anomaly of transfer on arrival.
+    f_TOA = OT.f_elliptic_transfer(f_POD, Theta, e_trans, a_trans, target.e, target.a, return_path_option, lower) # True anomaly of transfer on arrival.
         
     T_trans = OT.t_of_M_a(a_trans, mu, OT.M_of_E(e_trans, OT.E_of_f(e_trans, f_TOA))-np.cos(return_path_option*np.pi)*np.pi*lower) # Transfer time. 
         
-    f_PTOA = OT.f_of_E( e_target,  OT.E_of_M( e_target,  OT.M_of_t( T_target,  T_target0 + t + T_trans) ) ) # Target planet true anomaly on arrival.
+    f_PTOA = OT.f_of_E( target.e,  OT.E_of_M( target.e,  OT.M_of_t( target.T,  T_target0 + t + T_trans) ) ) # Target planet true anomaly on arrival.
         
     if abs(f_PTOA-(f_TOA+f_POD-np.cos(lower*np.pi)*Theta-np.pi*lower)) < 0.5*np.pi/180:
-        f_PODOA = OT.f_of_E( e_POD,  OT.E_of_M( e_POD,  OT.M_of_t( T_POD,  T_POD0 + t + T_trans) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
+        f_PODOA = OT.f_of_E( POD.e,  OT.E_of_M( POD.e,  OT.M_of_t( POD.T,  T_POD0 + t + T_trans) ) ) # Earth true anomaly on Mars arrival for Hohmann transfer.
         if lower == 0: 
             #print 'Date of outbound transfer [Julian Day Number]: \n' + str(JDN)  
-            output = 'OT.transfer_plot('+str(f_POD) +', ' + str(f_PODOA) +', '+str(f_target)+', '+str(f_TOA+f_POD-np.cos(lower*np.pi)*Theta-np.pi*lower)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(a_POD)+','+ str(e_POD)+', '+str(a_target)+', '+str(e_target)+', '+str(JDN)+')'
+            output = 'OT.transfer_plot('+str(f_POD) +', ' + str(f_PODOA) +', '+str(f_target)+', '+str(f_TOA+f_POD-np.cos(lower*np.pi)*Theta-np.pi*lower)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(POD.a)+','+ str(POD.e)+', '+str(target.a)+', '+str(target.e)+', '+str(JDN)+')'
         else:
             #print 'Date of return transfer [Julian Day Number]: \n' + str(JDN)            
             output = 'OT.plot_return('+str(f_M) +', ' + str(f_PODOA) +', '+str(f_E)+', '+str(f_TOA+f_M+Theta-np.pi)+', '+str(Theta)+', '+ str(a_trans)+', '+str(e_trans)+',' +str(Mars.a)+','+ str(Mars.e)+', '+str(Earth.a)+', '+str(Earth.e)+', '+str(JDN)+')'
         
-        return np.array([JDN, JDN+T_trans/86400, T_trans, a_trans, e_trans, a_target, e_target, a_POD, e_POD, f_E, f_M, f_TOA, f_PTOA, f_PODOA, return_path_option, lower])
+        return np.array([JDN, JDN+T_trans/86400, T_trans, a_trans, e_trans, POD, target, f_E, f_M, f_TOA, f_PTOA, f_PODOA, return_path_option, lower])
 
 Earth = planet(Earth)
 Mars = planet(Mars)
@@ -88,8 +80,8 @@ E = OT.E_of_f( Mars.e,  fM0 )
 M = OT.M_of_E( Mars.e,  E) 
 T_M0 = OT.t_of_M_T( Mars.T,  M ) 
 
-out_transfers = np.zeros([16])
-return_transfers = np.zeros([16])
+out_transfers = np.zeros([14])
+return_transfers = np.zeros([14])
 
 # Loop to solve for trajectories.
 
@@ -119,7 +111,7 @@ for t in xrange(0, t_max + step, step):
         E = OT.E_of_M( Earth.e,  M )
         f_EOMA = OT.f_of_E( Earth.e,  E ) # Earth true anomaly on Mars arrival for Hohmann transfer.
         
-        OT.transfer_plot(f_E, f_EOMA, f_M, f_MHA, Theta, a_H, e_H, Earth.a, Earth.e, Mars.a, Mars.e, JDN, font)
+        OT.transfer_plot(f_E, f_EOMA, f_M, f_MHA, Theta, a_H, e_H, Earth, Mars, JDN, font)
         
         print 'Date of Hohmann Departure [Julian Day Number]: \n' + str(JDN)        
         print 'Transfer Time [Days]:' + str(T_H/86400) + '\n'
@@ -135,12 +127,12 @@ for t in xrange(0, t_max + step, step):
         
         a_trans = R_EH/(1-e_trans)
         
-        transfer = elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 0)
+        transfer = elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars, T_M0, Earth, T_E0, muSun, 0)
         if str(transfer) != 'None':        
             out_transfers = np.vstack((out_transfers, transfer))        
         
         # Return path options (i.e. The transfer orbit picks up the target planet on second pass of the target's orbit. )
-        transfer = elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars.e, Mars.a, Mars.T, T_M0, Earth.e, Earth.a, Earth.T, T_E0, muSun, 1)
+        transfer = elliptical_transfer(f_E, f_M, Theta, e_trans, a_trans, Mars, T_M0, Earth, T_E0, muSun, 1)
         if str(transfer) != 'None':        
             out_transfers = np.vstack((out_transfers, transfer))        
         
@@ -163,13 +155,13 @@ for t in xrange(0, t_max + step, step):
     while e_trans >= e_H:
         a_trans = R_MH/(1+e_trans)
         
-        transfer = elliptical_transfer(f_M, f_E, Theta, e_trans, a_trans, Earth.e, Earth.a, Earth.T, T_E0, Mars.e, Mars.a, Mars.T, T_M0, muSun, 1)
+        transfer = elliptical_transfer(f_M, f_E, Theta, e_trans, a_trans, Earth, T_E0, Mars, T_M0, muSun, 1)
         if str(transfer) != 'None':        
             return_transfers = np.vstack((return_transfers, transfer))
         
         e_trans = e_trans - e_step
 
-mission_profiles=np.zeros([32])
+mission_profiles=np.zeros([28])
 for transfer in out_transfers:
     for return_transfer in return_transfers:
         if return_transfer[1] - transfer[0] < round_trip_max_days and  return_transfer[0] - transfer[1] > min_stay_time:
