@@ -60,10 +60,10 @@ def E_of_M_old(e, M):
     count = 0
     # Iteration Loop to Find Eccentric Anomaly
     
-    E0 = np.pi/3   # Initilize Eccentric Anomaly for Loop
-    E1 = -np.pi/2  # Initilize Eccentric Anomaly for Loop
+    E0 = np.pi/3
+    E1 = -np.pi/2
     
-    while abs(E1-E0) > 0.0005: # Condition On Which to Run Loop
+    while abs(E1-E0) > 0.0005: 
         count += 1        
         if E1 > 2*np.pi:
             E1 = E1 - 2*np.pi
@@ -78,7 +78,7 @@ def f_of_E(e, E):
     """True anomaly as fucntion of eccentric anomaly.
         Requires eccentritcity.
     """
-    f = 2*np.arctan(((1 + e) / (1 - e))**(1/2)*np.tan(E/2)) # True Anomaly
+    f = 2*np.arctan(((1 + e) / (1 - e))**(1/2)*np.tan(E/2))
     
     # Test to Make Sure True Anomaly is Between 0 and 360 Degrees
     if f < 0: 
