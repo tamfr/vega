@@ -156,21 +156,30 @@ def f_elliptic_transfer(
     # Initilize True Anomaly for Loop
     
     if lower == 0:
-        f_T0 = np.pi/3*(not return_path_option) + 3*np.pi/2*(return_path_option)
-        f_T1 = -np.pi/2*(not return_path_option) + 2*np.pi/3*(return_path_option)
+        f_T0 = np.pi/3*(not return_path_option) 
+        + 3*np.pi/2*(return_path_option)
+       
+        f_T1 = -np.pi/2*(not return_path_option) 
+        + 2*np.pi/3*(return_path_option)
     
     if lower == 1:
-        f_T0 = 3*np.pi/2*(not return_path_option) + np.pi/3*( return_path_option)
-        f_T1 = -np.pi*(not return_path_option) + -np.pi/3*(return_path_option)
+        f_T0 = 3*np.pi/2*(not return_path_option) 
+        + np.pi/3*( return_path_option)
+        
+        f_T1 = -np.pi*(not return_path_option) 
+        + -np.pi/3*(return_path_option)
 
     while abs(f_T1-f_T0) > 0.0005:
-        if f_T1 > np.pi*(((not return_path_option and not lower) + (return_path_option and lower)) + 2*(high+low)):
+        if f_T1 > np.pi*(((not return_path_option and not lower) 
+        + (return_path_option and lower)) + 2*(high+low)):
             f_T1 = f_T1-np.pi
         elif f_T1 < np.pi*(high + low):
             f_T1 = f_T1+np.pi
         else:
             f_T0 = f_T1
-            f_MOA = f_T0 + f - np.cos(lower*np.pi)*Theta-np.pi*lower # np.cos(lower*np.pi) serves as a switch to make Theta negative and serves as an on/off switch for subtracting pi.
+            # np.cos(lower*np.pi) serves as a switch to make Theta negative and 
+            # lower serves as an on/off switch for subtracting pi.            
+            f_MOA = f_T0 + f - np.cos(lower*np.pi)*Theta-np.pi*lower 
             function = 1 + e_trans*np.cos(f_T0) - Y - Y*e_target*np.cos(f_MOA)        
             derivative = Y*e_target*np.sin(f_MOA) - e_trans*np.sin(f_T0)           
             f_T1 = f_T0 - function/derivative
@@ -252,13 +261,47 @@ def transfer_plot(
     ax.plot(POD.orbit.x, POD.orbit.y, color = 'blue', lw = 1)
         
     ax.plot(target.orbit.x, target.orbit.y, color = 'red', lw = 1)
+
+    # Plots Earth's position upon TMI.    
     
-    ax.plot(R(POD.a, POD.e, f_POD)*np.cos(f_POD), R(POD.a, POD.e, f_POD)*np.sin(f_POD), color='b', marker='o')              # Plots Earth's position upon TMI.
-    ax.plot(R(target.a, target.e, f_target)*np.cos(f_target+Theta), R(target.a, target.e, f_target)*np.sin(f_target+Theta), color='r', marker='o')      # Plots Mars's position upon TMI.       
+    ax.plot(
+        R(POD.a, POD.e, f_POD)*np.cos(f_POD), 
+        R(POD.a, POD.e, f_POD)*np.sin(f_POD), 
+        color='b', 
+        marker='o',
+    )
+   
+   # Plots Mars's position upon TMI. 
     
-    ax.plot(R(POD.a, POD.e, f_PODOA)*np.cos(f_PODOA), R(POD.a, POD.e, f_PODOA)*np.sin(f_PODOA), color='b', marker='o', fillstyle='none')  # Plots Earth's position upon MOI.        
-    ax.plot(R(target.a, target.e, f_targetOA)*np.cos(f_targetOA+Theta), R(target.a, target.e, f_targetOA)*np.sin(f_targetOA+Theta), color='g', marker='o', fillstyle='none')  # Plots Mars's position upon MOI.
-    ax.plot(0, 0, color='k', marker='x') # Plots a black "x" to indicate the Sun's location.
+    ax.plot(
+        R(target.a, target.e, f_target)*np.cos(f_target+Theta), 
+        R(target.a, target.e, f_target)*np.sin(f_target+Theta), 
+        color='r', 
+        marker='o',
+    )            
+    
+    # Plots Earth's position upon MOI.
+    
+    ax.plot(
+        R(POD.a, POD.e, f_PODOA)*np.cos(f_PODOA), 
+        R(POD.a, POD.e, f_PODOA)*np.sin(f_PODOA), 
+        color='b', 
+        marker='o', 
+        fillstyle='none',
+    )  
+    
+    # Plots Mars's position upon MOI.
+    
+    ax.plot(
+        R(target.a, target.e, f_targetOA)*np.cos(f_targetOA+Theta), 
+        R(target.a, target.e, f_targetOA)*np.sin(f_targetOA+Theta), 
+        color='g', marker='o', 
+        fillstyle='none'
+    )  
+    
+    # Plots a black "x" to indicate the Sun's location.
+    
+    ax.plot(0, 0, color='k', marker='x')
     
     plt.xlabel('distance [km]', fontdict = font)
     plt.ylabel('distance [km]', fontdict = font)
